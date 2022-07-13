@@ -18,7 +18,9 @@
     "react-native-elements": "^3.4.2",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "^3.10.1",
-    "react-native-vector-icons": "^9.2.0"
+    "react-native-vector-icons": "^9.2.0",
+    "react-native-table-component": "^1.2.2",
+    "react-native-snap-carousel": "^3.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",

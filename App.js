@@ -10,14 +10,17 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer >
-        <Stack.Navigator 
+        <Stack.Navigator
           screenOptions={{
+            animation: 'flip',
             gestureEnabled: true,
+            headerShown: false,
             headerStyle: { backgroundColor: '#003c5d'},
             headerTitleStyle: { fontWeight: 'bold' },
             headerTintColor: '#fff'
-          }}>
-          <Stack.Screen name='Dashboard' component={HomeTabs}/>
+          }}
+          >
+          <Stack.Screen name='Training' component={HomeTabs}/>
           {/* <Stack.Screen name='TodayExercise' component={Exercises}/>
           <Stack.Screen name='Routine' component={Routine}/> */}
         </Stack.Navigator>
