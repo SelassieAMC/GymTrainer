@@ -528,7 +528,7 @@ export default {
                     id: 1,
                     day : 4,
                     name : 'Prensa una pierna - dia 4',
-                    image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
+                    image : 'https://www.thingys.com.ar/gymapps/tutorial/beinpresse_45_grad%20(1).gif',
                     muscle : 'Cuadricep, femoral, gluteo',
                     series: [
                         {
@@ -557,7 +557,7 @@ export default {
                     id : 2,
                     day : 4,
                     name : 'Peso muerto - dia 4',
-                    image : 'https://www.cambiatufisico.com/wp-content/uploads/peso-muerto2.jpg',
+                    image : 'https://www.thingys.com.ar/gymapps/tutorial/peso_muerto.gif',
                     muscle : 'Femoral',
                     series: [
                         {

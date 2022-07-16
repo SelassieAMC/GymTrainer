@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet, Dimensions, Text, ScrollView, Image, View, Button } from "react-native";
+import { StyleSheet, Dimensions, Text, ScrollView, Image, View, Button, TouchableOpacity } from "react-native";
 import Routines from "../common/helpers/Routines";
 import { Card } from "react-native-elements";
 import ExerciseInProgress from '../exercises/ExerciseInProgress';
@@ -16,6 +16,17 @@ export default function TodayTraining(props)
     const day = days[dayNumber];
     const [exercises, setExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === dayNumber));
     const [selectedExercise, setSelectedExercise] = useState(null);
+
+
+    useEffect(() => {
+        if (!selectedExercise)
+        {
+            props.navigation?.setOptions({
+                headerLeft: () => <></>
+            });
+        }
+    },[selectedExercise]);
+
 
     const onExerciseDone = () => {
         let cloneData = exercises.slice();
@@ -41,9 +52,10 @@ export default function TodayTraining(props)
 
     return (
         <>
-            <Text style={styles.titles}>{day} workout</Text>
             {exercises && !selectedExercise && 
-                <SafeAreaView style={styles.container}>
+            <>
+                <Text style={styles.titles}>{day} workout</Text>
+                <SafeAreaView>
                     <ScrollView>
                         {exercises.map(exercise => 
                             <Card containerStyle={styles.cardContainer} key={exercise.id}>
@@ -65,10 +77,11 @@ export default function TodayTraining(props)
                         )}
                     </ScrollView>
                 </SafeAreaView>
+            </> 
             }
             {selectedExercise && 
                 <SafeAreaView>
-                    <ExerciseInProgress selectedExercise={selectedExercise} onExerciseDone={onExerciseDone}/>
+                    <ExerciseInProgress selectedExercise={selectedExercise} onExerciseDone={onExerciseDone} onExit={() => setSelectedExercise(null)} navigation={props.navigation}/>
                 </SafeAreaView>
             }
         </>
@@ -76,16 +89,13 @@ export default function TodayTraining(props)
 }
 
 const styles = StyleSheet.create({
-    container: {
-        //backgroundColor: '#19204E'
-        
-    },
     titles: {
         fontSize: 30,
         fontWeight: "bold",
         alignSelf: 'center',
         color: '#19204E',
-        margin: 10,
+        marginTop: 10,
+        marginLeft:10,
         marginBottom: -40
     },
     cardContainer: {

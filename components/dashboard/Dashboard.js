@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native"
-import { Card, Text, Button } from "react-native-elements";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text } from "react-native"
+import { Card } from "react-native-elements";
 import fireImage from '../../images/dashboard/fire.png';
 import chestImage from '../../images/dashboard/chest.png';
 import legImage from '../../images/dashboard/leg.png';
