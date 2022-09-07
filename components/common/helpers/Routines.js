@@ -105,20 +105,20 @@ export default {
                         {
                             reps: 12,
                             weight: 40,
-                            fail: true,
-                            rest: 90
+                            rest: 90,
+                            fail: true
                         },
                         {
                             reps: 12,
                             weight: 45,
-                            fail: false,
-                            rest: 90
+                            rest: 90,
+                            fail: false
                         },
                         {
                             reps: 13,
                             weight: 50,
-                            fail: false,
-                            rest: 120
+                            rest: 120,
+                            fail: false
                         },
                         {
                             reps: 14,
@@ -234,20 +234,20 @@ export default {
                         {
                             reps: 12,
                             weight: 40,
-                            fail: true,
-                            rest: 90
+                            rest: 90,
+                            fail: true
                         },
                         {
                             reps: 12,
                             weight: 45,
-                            fail: false,
-                            rest: 90
+                            rest: 90,
+                            fail: false
                         },
                         {
                             reps: 13,
                             weight: 50,
-                            fail: false,
-                            rest: 120
+                            rest: 120,
+                            fail: false
                         },
                         {
                             reps: 14,
@@ -879,20 +879,20 @@ export default {
                         {
                             reps: 12,
                             weight: 40,
-                            fail: true,
-                            rest: 90
+                            rest: 90,
+                            fail: true
                         },
                         {
                             reps: 12,
                             weight: 45,
-                            fail: false,
-                            rest: 90
+                            rest: 90,
+                            fail: false
                         },
                         {
                             reps: 13,
                             weight: 50,
-                            fail: false,
-                            rest: 120
+                            rest: 120,
+                            fail: false
                         },
                         {
                             reps: 14,

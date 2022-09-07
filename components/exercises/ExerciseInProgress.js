@@ -1,9 +1,9 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { Text } from "react-native-elements";
-import { Table, TableWrapper, Cell } from "react-native-table-component";
-import { StyleSheet, TouchableOpacity, View, Image, Alert, TextInput, FlatList } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image, TextInput, FlatList } from "react-native";
 import { LogBox } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 
 LogBox.ignoreLogs(['Warning: Failed prop type: Invalid prop `style` of type `array` supplied to `Cell`, expected `object`.']);
@@ -15,16 +15,21 @@ export default function ExerciseInProgress(props)
     const [restModalOpened, openRestModal] = useState(false);
     const [editSerie, setEditSerie] = useState(false);
 
+    const [openDropdown, setOpenDropdown] = useState(false);
+
     const arrangedSerieInfo = Object.keys(series[serie]).map((key, index) => {
         const serieKey = series[serie][key];
-        if (index === 0)
-            return {title: 'Repetitions', value: serieKey, index: 0}
-        if (index === 1)
-            return {title: 'Weight (Kg)', value: serieKey, index: 1}
-        if (index === 2)
-            return {title: 'Fail', value: (serieKey === true ? 'yes' : 'no'), index: 2}
-        if (index === 3)
-            return {title: 'Rest (Seconds)', value: serieKey, index: 3}
+        switch(key)
+        {
+            case 'reps': 
+                return {title: 'Repetitions', value: serieKey, index: 0}
+            case 'weight': 
+                return {title: 'Weight (Kg)', value: serieKey, index: 1}
+            case 'rest': 
+                return {title: 'Rest (Seconds)', value: serieKey, index: 2}
+            case 'fail': 
+                return {title: 'Fail', value: serieKey, index: 3} 
+        }      
     });
 
     let seriesCount = props.selectedExercise.series.length;
@@ -74,9 +79,9 @@ export default function ExerciseInProgress(props)
             break;
             case 1: tempEditedSerie = {...tempEditedSerie, weight: newValue};
             break;
-            case 2: tempEditedSerie = {...tempEditedSerie, fail: newValue === 'yes' ? 1 : 0};
+            case 2: tempEditedSerie = {...tempEditedSerie, rest: newValue};
             break;
-            case 3: tempEditedSerie = {...tempEditedSerie, rest: newValue};
+            case 3: tempEditedSerie = {...tempEditedSerie, fail: newValue};
             break;
         }
         let tempSeries = {...series}
@@ -91,13 +96,28 @@ export default function ExerciseInProgress(props)
             </View>
             
             <View style={[styles.exerciseValuesContainer, editSerie ? styles.editableExerciseContainer : styles.notEditableExerciseContainer]}>
+                {item.index !== 3 ? 
                 <TextInput 
                     key={item.index} 
                     value={item.value.toString()} 
                     keyboardType='numeric' 
                     editable={editSerie} 
                     onChangeText={newText => setExerciseValue(newText, item.index)}
-                    style={styles.text}/> 
+                    style={styles.text}/> :
+                !editSerie ? 
+                    <Text style={styles.text}>{item.value ? 'Yes' : 'No'}</Text> :
+                    <DropDownPicker
+                        open={openDropdown}
+                        setOpen={setOpenDropdown}
+                        items={[{label: 'Yes', value: true}, {label: 'No', value: false}]}
+                        key={item.index}
+                        value={item.value}
+                        textStyle={styles.dropdownText}
+                        containerStyle={{borderColor: '#FCF4C2',zIndex:10000}}
+                        dropDownContainerStyle={{borderColor: '#FCF4C2',zIndex:10000}}
+                        style={{borderColor: 'white', backgroundColor: '#FCF4C2',zIndex:10000}}
+                        zIndex={10000}
+                        setValue={newText => setExerciseValue(newText(), item.index)}/>}
             </View>
         </View>
       );
@@ -114,8 +134,8 @@ export default function ExerciseInProgress(props)
             <View style={{flexDirection:'row',justifyContent: 'center'}}>
                 <Text style={{textAlign: "center", marginBottom: 20}} h2>Serie {serie+1}/{seriesCount}</Text>
                 {editSerie ? 
-                    <Icon name="save" size={25} color="orange" style={{marginTop: 11, marginLeft: 15}} onPress={() => setEditSerie(false)}/> :
-                    <Icon name="pencil" size={25} color="orange" style={{marginTop: 11, marginLeft: 15}} onPress={() => setEditSerie(true)}/>
+                    <Icon name="save" size={25} color="#f29316" style={{marginTop: 11, marginLeft: 15}} onPress={() => setEditSerie(false)}/> :
+                    <Icon name="pencil" size={25} color="#f29316" style={{marginTop: 11, marginLeft: 15}} onPress={() => setEditSerie(true)}/>
                 }
             </View>
             <View>
@@ -129,32 +149,36 @@ export default function ExerciseInProgress(props)
             <View style={styles.buttonsContainer}>
                 {serie > 0 && (
                 <TouchableOpacity
-                    style={styles.touchableButton}
+                    disabled={editSerie}
+                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
                     onPress={() => goBack()}>
-                    <Text style={styles.text}>Back</Text>
+                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Back</Text>
                 </TouchableOpacity>)}
                 <TouchableOpacity
-                    style={styles.touchableButton}
+                    disabled={editSerie}
+                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
                     onPress={() => finishRest()}>
-                    <Text style={styles.text}>Next</Text>
+                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Next</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.touchableButton}
+                    disabled={editSerie}
+                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
                     onPress={() => null}>
-                    <Text style={styles.text}>Skip</Text>
+                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Skip</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.touchableButton}
+                    disabled={editSerie}
+                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
                     onPress={() => openModal()}>
-                    <Text style={styles.text}>Rest</Text>
+                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Rest</Text>
                 </TouchableOpacity>
             </View>)}
             {serie+1 === seriesCount && (
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity
-                    style={styles.touchableButton}
+                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
                     onPress={() => props.onExerciseDone()}>
-                    <Text style={styles.text}>Finish</Text>
+                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Finish</Text>
                 </TouchableOpacity>
             </View>)}
         </View>
@@ -163,11 +187,18 @@ export default function ExerciseInProgress(props)
 
 const styles = StyleSheet.create({
     text: { 
+        fontSize: 18,
+        alignSelf: "center"
+    },
+    dropdownText: { 
         textAlign: 'center',
-        fontSize: 18
+        fontSize: 16
+    },
+    disabledText: {
+        color: '#787878'
     },
     editTextInput: {
-        backgroundColor: '#005f73', 
+        backgroundColor: '#f29316', 
         borderStyle: 'solid',
         borderColor: '#FFFFFF'
     },
@@ -188,15 +219,20 @@ const styles = StyleSheet.create({
         borderBottomWidth:1
     },
     exerciseValuesContainer: {
-        width: 80,
-        padding: 6
+        width: 120,
+        padding: 6,
+        justifyContent: 'center'
     },
     exerciseTitleContainer: {
-        backgroundColor: 'orange',
+        backgroundColor: '#f29316',
         width:150,
         padding: 10,
         borderBottomColor: 'white',
-        borderBottomWidth:1
+        borderBottomWidth:1,
+        justifyContent: 'center'
+    },
+    exerciseDataContainer: {
+        height: 230
     },
     row: { 
         height: 60, 
@@ -208,8 +244,11 @@ const styles = StyleSheet.create({
         height: 40,
         justifyContent: 'center',
         borderRadius: 50,
-        backgroundColor: 'orange',
+        backgroundColor: '#f29316',
         marginBottom: 40
+    },
+    disableButton: {
+        backgroundColor: '#f5c484',
     },
     buttonsContainer: {
         flexDirection:'row',
