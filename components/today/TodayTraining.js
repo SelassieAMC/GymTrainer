@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet, Dimensions, Text, ScrollView, Image, View, Button, TouchableOpacity } from "react-native";
+import { StyleSheet, Dimensions, Text, ScrollView, Image, View, Button } from "react-native";
 import Routines from "../common/helpers/Routines";
 import { Card } from "react-native-elements";
 import ExerciseInProgress from '../exercises/ExerciseInProgress';

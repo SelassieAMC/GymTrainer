@@ -135,7 +135,7 @@ export default function ExerciseInProgress(props)
                 <Text style={{textAlign: "center", marginBottom: 20}} h2>Serie {serie+1}/{seriesCount}</Text>
                 {editSerie ? 
                     <Icon name="save" size={25} color="#f29316" style={{marginTop: 11, marginLeft: 15}} onPress={() => setEditSerie(false)}/> :
-                    <Icon name="pencil" size={25} color="#f29316" style={{marginTop: 11, marginLeft: 15}} onPress={() => setEditSerie(true)}/>
+                    <Icon name="edit" size={30} color="#f29316" style={{marginTop: 11, marginLeft: 15}} onPress={() => setEditSerie(true)}/>
                 }
             </View>
             <View>
@@ -145,40 +145,40 @@ export default function ExerciseInProgress(props)
                     contentContainerStyle={styles.exerciseDataContainer}
                 />
             </View>
-            {serie+1 < seriesCount && (
+            {serie+1 < seriesCount && !editSerie && (
             <View style={styles.buttonsContainer}>
                 {serie > 0 && (
                 <TouchableOpacity
                     disabled={editSerie}
-                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
+                    style={styles.touchableButton}
                     onPress={() => goBack()}>
-                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Back</Text>
+                    <Text style={styles.text}>Back</Text>
                 </TouchableOpacity>)}
                 <TouchableOpacity
                     disabled={editSerie}
-                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
+                    style={styles.touchableButton}
                     onPress={() => finishRest()}>
-                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Next</Text>
+                    <Text style={styles.text}>Next</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     disabled={editSerie}
-                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
+                    style={styles.touchableButton}
                     onPress={() => null}>
-                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Skip</Text>
+                    <Text style={styles.text}>Skip</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     disabled={editSerie}
-                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
+                    style={styles.touchableButton}
                     onPress={() => openModal()}>
-                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Rest</Text>
+                    <Text style={styles.text}>Rest</Text>
                 </TouchableOpacity>
             </View>)}
             {serie+1 === seriesCount && (
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity
-                    style={[styles.touchableButton, editSerie ? styles.disableButton : '']}
+                    style={styles.touchableButton}
                     onPress={() => props.onExerciseDone()}>
-                    <Text style={[styles.text, editSerie ? styles.disabledText : '']}>Finish</Text>
+                    <Text style={styles.text}>Finish</Text>
                 </TouchableOpacity>
             </View>)}
         </View>
@@ -193,14 +193,6 @@ const styles = StyleSheet.create({
     dropdownText: { 
         textAlign: 'center',
         fontSize: 16
-    },
-    disabledText: {
-        color: '#787878'
-    },
-    editTextInput: {
-        backgroundColor: '#f29316', 
-        borderStyle: 'solid',
-        borderColor: '#FFFFFF'
     },
     editableExerciseContainer: {
         backgroundColor: '#FCF4C2',
@@ -234,11 +226,6 @@ const styles = StyleSheet.create({
     exerciseDataContainer: {
         height: 230
     },
-    row: { 
-        height: 60, 
-        backgroundColor: '#F6F7Fb',
-        padding: 10
-    },
     touchableButton: {
         width: 90,
         height: 40,
@@ -246,9 +233,6 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         backgroundColor: '#f29316',
         marginBottom: 40
-    },
-    disableButton: {
-        backgroundColor: '#f5c484',
     },
     buttonsContainer: {
         flexDirection:'row',
