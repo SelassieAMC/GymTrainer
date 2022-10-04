@@ -1,9 +1,10 @@
 import React, { useLayoutEffect, useState } from "react";
-import { Text } from "react-native-elements";
+import { Button, Text } from "react-native-elements";
 import { StyleSheet, TouchableOpacity, View, Image, TextInput, FlatList } from "react-native";
 import { LogBox } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { Title } from "react-native-paper";
 
 
 LogBox.ignoreLogs(['Warning: Failed prop type: Invalid prop `style` of type `array` supplied to `Cell`, expected `object`.']);
@@ -12,7 +13,7 @@ export default function ExerciseInProgress(props)
 {
     const [serie, setSerie] = useState(0);
     const [series, setSeries] = useState([...props.selectedExercise.series]);
-    const [restModalOpened, openRestModal] = useState(false);
+    // const [restModalOpened, openRestModal] = useState(false);
     const [editSerie, setEditSerie] = useState(false);
 
     const [openDropdown, setOpenDropdown] = useState(false);
@@ -51,7 +52,7 @@ export default function ExerciseInProgress(props)
         return;
 
         setSerie(serie+1);
-        openRestModal(false);
+        //openRestModal(false);
     }
 
     const goBack = () => {
@@ -59,7 +60,7 @@ export default function ExerciseInProgress(props)
         return;
 
         setSerie(serie-1);
-        openRestModal(false);
+        //openRestModal(false);
     }
 
     const openModal = () =>
@@ -68,7 +69,7 @@ export default function ExerciseInProgress(props)
             return;
 
         setSerie(serie+1);
-        openRestModal(true);
+        //openRestModal(true);
     }
 
     const setExerciseValue = (newValue, index) => {
@@ -131,11 +132,11 @@ export default function ExerciseInProgress(props)
                 }}
                 resizeMode={"contain"}
             />
-            <View style={{flexDirection:'row',justifyContent: 'center'}}>
-                <Text style={{textAlign: "center", marginBottom: 20}} h2>Serie {serie+1}/{seriesCount}</Text>
+            <View style={{flexDirection:'row',justifyContent: 'center', marginTop: 30, marginBottom: 30}}>
+                <Title style={{textAlign: "center", fontSize: 28}}>Serie {serie+1}/{seriesCount}</Title>
                 {editSerie ? 
-                    <Icon name="save" size={25} color="#f29316" style={{marginTop: 11, marginLeft: 15}} onPress={() => setEditSerie(false)}/> :
-                    <Icon name="edit" size={30} color="#f29316" style={{marginTop: 11, marginLeft: 15}} onPress={() => setEditSerie(true)}/>
+                    <Icon name="save" size={25} color="#f29316" style={{marginLeft: 15}} onPress={() => setEditSerie(false)}/> :
+                    <Icon name="edit" size={30} color="#f29316" style={{marginLeft: 15}} onPress={() => setEditSerie(true)}/>
                 }
             </View>
             <View>
@@ -148,38 +149,42 @@ export default function ExerciseInProgress(props)
             {serie+1 < seriesCount && !editSerie && (
             <View style={styles.buttonsContainer}>
                 {serie > 0 && (
-                <TouchableOpacity
+                <Button
+                    type="outline"  
+                    style={styles.touchableButton}
+                    onPress={() => goBack()}
+                    title="Back"
+                />)}
+                <Button
+                    type="outline"
                     disabled={editSerie}
                     style={styles.touchableButton}
-                    onPress={() => goBack()}>
-                    <Text style={styles.text}>Back</Text>
-                </TouchableOpacity>)}
-                <TouchableOpacity
+                    onPress={() => finishRest()}
+                    title='Next'
+                />
+                <Button
+                    type="outline"
                     disabled={editSerie}
                     style={styles.touchableButton}
-                    onPress={() => finishRest()}>
-                    <Text style={styles.text}>Next</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
+                    onPress={() => null}
+                    title='Skip'
+                />
+                <Button
+                    type="outline"
                     disabled={editSerie}
                     style={styles.touchableButton}
-                    onPress={() => null}>
-                    <Text style={styles.text}>Skip</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    disabled={editSerie}
-                    style={styles.touchableButton}
-                    onPress={() => openModal()}>
-                    <Text style={styles.text}>Rest</Text>
-                </TouchableOpacity>
+                    onPress={() => openModal()}
+                    title='Rest'
+                />
             </View>)}
             {serie+1 === seriesCount && (
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity
+                <Button
+                    type="outline"
                     style={styles.touchableButton}
-                    onPress={() => props.onExerciseDone()}>
-                    <Text style={styles.text}>Finish</Text>
-                </TouchableOpacity>
+                    onPress={() => props.onExerciseDone()}
+                    title='Finish'
+                />
             </View>)}
         </View>
     );
@@ -231,7 +236,6 @@ const styles = StyleSheet.create({
         height: 40,
         justifyContent: 'center',
         borderRadius: 50,
-        backgroundColor: '#f29316',
         marginBottom: 40
     },
     buttonsContainer: {

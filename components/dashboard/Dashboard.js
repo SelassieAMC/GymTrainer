@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text } from "react-native"
 import { Card } from "react-native-elements";
-import fireImage from '../../images/dashboard/fire.png';
-import chestImage from '../../images/dashboard/chest.png';
-import legImage from '../../images/dashboard/leg.png';
+import FireImage from '../../images/dashboard/fire-muscle.svg';
+import chestImage from '../../images/dashboard/arm-icon.png';
+import legImage from '../../images/dashboard/legs-icon.png';
 import trainingPlanImage from '../../images/dashboard/training-plan.jpg';
 import improveDietImage from '../../images/dashboard/improve-diet.jpeg';
 import bestTrainingImage from '../../images/dashboard/best-training.jpg';
@@ -17,12 +17,7 @@ export default function Dashboard( { navigation })
                 <Card containerStyle={styles.streakCardRecord}>
                     <Card.Title h4 style={styles.cardTitle}>Daily record</Card.Title>
                     <View style={{flexDirection:'row'}}>
-                        <Image
-                            style={styles.streakImage}
-                            source={{
-                                uri: Image.resolveAssetSource(fireImage).uri
-                            }}
-                        />
+                        <FireImage width={48}/>
                         <View style={styles.mainCardTextData}>
                             <Text style={styles.mainCardText}>
                                 X streak days
@@ -125,7 +120,7 @@ const styles = StyleSheet.create({
     streakImage: {
         width: 80,
         height:140
-    },    
+    },
     mainCardTextData: {
         flex: 1,
         justifyContent: 'center',
@@ -148,8 +143,9 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     mostWorkedImage: {
+        resizeMode: 'cover',
         width: 60,
-        height:120    
+        height: 60
     },
     lessWorkedCardRecord: {
         flex: 1,
@@ -158,7 +154,7 @@ const styles = StyleSheet.create({
     },
     lessWorkedImage: {
         width: 60,
-        height:120    
+        height:120
     },
     cardTitle: {
         textAlign: 'left',

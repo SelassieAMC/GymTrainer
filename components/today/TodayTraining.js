@@ -72,7 +72,6 @@ export default function TodayTraining(props)
                                         <Button 
                                             icon={
                                                 <Icon
-                                                    
                                                     name="play-circle"
                                                     size={19}
                                                     color="#FDB10E"
@@ -87,7 +86,6 @@ export default function TodayTraining(props)
                                         <Button 
                                             icon={
                                                 <Icon
-                                                
                                                     name="times-circle"
                                                     size={19}
                                                     color="#FDB10E"
