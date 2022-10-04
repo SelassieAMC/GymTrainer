@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, FlatList, Text } from "react-native";
+import { StyleSheet, View, FlatList, Text, Modal } from "react-native";
 import { Button, Card } from "react-native-elements";
 import { Divider } from "react-native-elements/dist/divider/Divider";
 import { Title } from "react-native-paper";
@@ -9,6 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 export default function Exercises(props)
 {
     const [isFavorite, setFavorite] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     const DATA = [
         {
             id: 1,
@@ -43,7 +44,7 @@ export default function Exercises(props)
     ];
 
     const renderItem = ({item}) => (
-        <View>
+        <View key={item.name}>
             <Card containerStyle={styles.cardContainer}>
                 <Card.Title h4 style={{alignSelf: 'center' }}>
                     <View style={styles.cardTitle}>
@@ -96,6 +97,7 @@ export default function Exercises(props)
                             title='Add to your routine'
                             type="outline" 
                             buttonStyle={{borderRadius: 10}}
+                            onPress={() => setModalVisible(true)}
                         />
                         <Button
                             icon={
@@ -119,9 +121,40 @@ export default function Exercises(props)
 
     return (
         <SafeAreaView style={styles.container}>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                presentationStyle="overFullScreen"
+                onRequestClose={() => setModalVisible(!modalVisible)}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Modal to add routine to the day or week</Text>
+
+                        <View style={{width: 200, alignSelf: 'center', height: 90, justifyContent: 'space-between', marginTop: 5, paddingBottom: 5}}>
+                        <Button 
+                            icon={
+                                <FontAwesome
+                                    name="close"
+                                    solid
+                                    size={19}
+                                    style={{marginRight:5}}
+                                    color='#FDB10E'
+                                />
+                            }
+                            title='Cancel'
+                            type="outline" 
+                            buttonStyle={{borderRadius: 10}}
+                            onPress={() => setModalVisible(false)}
+                        />
+                    </View>
+                    </View>
+                </View>
+            </Modal>
             <Title style={styles.catalogTitle}>Exercises Catalog</Title>
             <Text>Filters</Text>
-            <View flexDirection='row' justifyContent='space-around' marginBottom='10'>
+            <View flexDirection='row' justifyContent='space-around'>
                 <Text>Body part</Text>
                 <Text>Muscle</Text>
                 <Text>Type</Text>
@@ -169,5 +202,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
   });

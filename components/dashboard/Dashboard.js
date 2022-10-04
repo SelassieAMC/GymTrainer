@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text } from "react-native"
 import { Card } from "react-native-elements";
-import FireImage from '../../images/dashboard/fire-muscle.svg';
+import fireImage from '../../images/dashboard/fire-muscle.png';
 import chestImage from '../../images/dashboard/arm-icon.png';
 import legImage from '../../images/dashboard/legs-icon.png';
 import trainingPlanImage from '../../images/dashboard/training-plan.jpg';
@@ -17,7 +17,12 @@ export default function Dashboard( { navigation })
                 <Card containerStyle={styles.streakCardRecord}>
                     <Card.Title h4 style={styles.cardTitle}>Daily record</Card.Title>
                     <View style={{flexDirection:'row'}}>
-                        <FireImage width={48}/>
+                        <Image
+                            style={styles.streakImage}
+                            source={{
+                                uri: Image.resolveAssetSource(fireImage).uri
+                            }}
+                        />
                         <View style={styles.mainCardTextData}>
                             <Text style={styles.mainCardText}>
                                 X streak days
@@ -50,7 +55,7 @@ export default function Dashboard( { navigation })
                     <Card.Title h5 style={styles.cardTitle}>Less worked area</Card.Title>
                     <View style={{flexDirection:'row'}}>
                         <Image
-                            style={styles.mostWorkedImage}
+                            style={styles.lessWorkedImage}
                             source={{
                                 uri: Image.resolveAssetSource(legImage).uri
                             }}
@@ -119,7 +124,7 @@ const styles = StyleSheet.create({
     },
     streakImage: {
         width: 80,
-        height:140
+        height:80
     },
     mainCardTextData: {
         flex: 1,
@@ -143,7 +148,6 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     mostWorkedImage: {
-        resizeMode: 'cover',
         width: 60,
         height: 60
     },
@@ -154,15 +158,15 @@ const styles = StyleSheet.create({
     },
     lessWorkedImage: {
         width: 60,
-        height:120
+        height:80
     },
     cardTitle: {
         textAlign: 'left',
-        color: '#F61732'
+        color: '#FFFFFF'
     },
     cardText: {
         color: 'black',
-        fontSize: 20,
+        fontSize: 16,
         textAlign: 'center',
         flexShrink: 1
     },
