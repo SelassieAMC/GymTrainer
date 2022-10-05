@@ -17,6 +17,7 @@
     "react-devtools": "^4.25.0",
     "react-native": "0.68.2",
     "react-native-dropdown-picker": "^5.4.2",
+    "react-native-element-dropdown": "^2.3.0",
     "react-native-elements": "^3.4.2",
     "react-native-paper": "^4.12.4",
     "react-native-safe-area-context": "3.3.2",

@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Title } from "react-native-paper";
 
-
 LogBox.ignoreLogs(['Warning: Failed prop type: Invalid prop `style` of type `array` supplied to `Cell`, expected `object`.']);
 
 export default function ExerciseInProgress(props)
