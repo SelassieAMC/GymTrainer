@@ -29,7 +29,7 @@ export default function ExerciseCard(props)
             <View
                 style={{borderStyle: 'solid', borderWidth: 1, borderTopWidth: 0, borderBottomLeftRadius: 5, borderBottomRightRadius: 5,borderColor: '#9B9A99', borderTopColor: 'none', padding: 5, marginTop: 10}}>
                 <View style={{flexDirection: "row", alignItems: "baseline", marginTop: 10}}>
-                    <FontAwesome name="tags" color={'green'} style={styles.muscleItemIcon} size={14} solid/>
+                    <FontAwesome name="tags" color={'#FDB10E'} style={styles.muscleItemIcon} size={14} solid/>
                     <Text style={{fontSize: 16}}>Set of muscles</Text>
                 </View>
                 <Divider/>
@@ -47,11 +47,11 @@ export default function ExerciseCard(props)
             <View
                 style={{borderStyle: 'solid', borderWidth: 1, borderTopWidth: 0, borderBottomLeftRadius: 5, borderBottomRightRadius: 5, borderColor: '#9B9A99', borderTopColor: 'none', padding: 5, marginTop: 10}}>
                 <View style={{flexDirection: "row", alignItems: "baseline", marginTop: 10}}>
-                    <FontAwesome name="tasks" color={'green'} style={styles.muscleItemIcon} size={18} solid/>
+                    <FontAwesome name="tasks" color={'#FDB10E'} style={styles.muscleItemIcon} size={18} solid/>
                     <Text style={{fontSize: 16}}>Actions</Text>
                     </View>
                 <Divider/>
-                {props.actions()}
+                {props.actions(item)}
             </View>
         </Card>
     );
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 10,
-        paddingLeft: 5,
-        paddingRight: 5
+        paddingLeft: 15,
+        paddingRight: 15
     },
     muscleContainer: {
         flexDirection: "row",

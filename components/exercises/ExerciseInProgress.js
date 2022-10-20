@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from "react";
 import { Button, Text } from "react-native-elements";
-import { StyleSheet, TouchableOpacity, View, Image, TextInput, FlatList } from "react-native";
-import { LogBox } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image, TextInput, FlatList, LogBox } from "react-native";
+import CustomDropdown from "../common/Dropdown";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Title } from "react-native-paper";
@@ -48,7 +48,7 @@ export default function ExerciseInProgress(props)
 
     const finishRest = () => {
         if (serie + 2 > seriesCount)
-        return;
+            return;
 
         setSerie(serie+1);
         //openRestModal(false);
@@ -56,14 +56,13 @@ export default function ExerciseInProgress(props)
 
     const goBack = () => {
         if (serie == 0)
-        return;
+            return;
 
         setSerie(serie-1);
         //openRestModal(false);
     }
 
-    const openModal = () =>
-    {
+    const openModal = () => {
         if (serie + 2 > seriesCount)
             return;
 
@@ -96,28 +95,24 @@ export default function ExerciseInProgress(props)
             </View>
             
             <View style={[styles.exerciseValuesContainer, editSerie ? styles.editableExerciseContainer : styles.notEditableExerciseContainer]}>
-                {item.index !== 3 ? 
+                {item.index !== 3 && 
                 <TextInput 
                     key={item.index} 
                     value={item.value.toString()} 
                     keyboardType='numeric' 
                     editable={editSerie} 
                     onChangeText={newText => setExerciseValue(newText, item.index)}
-                    style={styles.text}/> :
-                !editSerie ? 
-                    <Text style={styles.text}>{item.value ? 'Yes' : 'No'}</Text> :
-                    <DropDownPicker
-                        open={openDropdown}
-                        setOpen={setOpenDropdown}
-                        items={[{label: 'Yes', value: true}, {label: 'No', value: false}]}
-                        key={item.index}
-                        value={item.value}
-                        textStyle={styles.dropdownText}
-                        containerStyle={{borderColor: '#FCF4C2',zIndex:10000}}
-                        dropDownContainerStyle={{borderColor: '#FCF4C2',zIndex:10000}}
-                        style={{borderColor: 'white', backgroundColor: '#FCF4C2',zIndex:10000}}
-                        zIndex={10000}
-                        setValue={newText => setExerciseValue(newText(), item.index)}/>}
+                    style={styles.text}/>}
+                {item.index === 3 && !editSerie &&
+                    <Text style={styles.text}>{item.value ? 'Yes' : 'No'}</Text>} 
+                {item.index === 3 && editSerie &&
+                    <CustomDropdown 
+                        data={[{label: 'Yes', value: true}, {label: 'No', value: false}]} 
+                        dropdownStyle={{width:100, borderWidth: 0}}
+                        selectedTextStyle={{fontSize: 18}} 
+                        onSelectedValue={newText => setExerciseValue(newText, item.index)}
+                        defaultValue={item.value}
+                    />}
             </View>
         </View>
       );

@@ -5,19 +5,19 @@ import Routines from "../common/helpers/Routines";
 import { Button, Card } from "react-native-elements";
 import ExerciseInProgress from '../exercises/ExerciseInProgress';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { GetCurrentDayNumberAndName } from "../common/helpers/Utils";
+import { useIsFocused } from "@react-navigation/native";
 
 export const SLIDER_WIDTH = Dimensions.get('window').width + 80
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7)
 
 export default function TodayTraining(props)
 {
-    const date = new Date();
-    const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-    const dayNumber = props.dayNumber ? props.dayNumber-1 : date.getDay()-1;
-    const day = days[dayNumber];
-    const [exercises, setExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === dayNumber));
+    const [dayNumber, dayName] = GetCurrentDayNumberAndName();
+    const day = props.dayNumber ? props.dayNumber-1 : dayNumber;
+    const [exercises, setExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === day));
     const [selectedExercise, setSelectedExercise] = useState(null);
-
+    const isFocused = useIsFocused(); //Re-render the component
 
     useEffect(() => {
         if (!selectedExercise)
@@ -28,34 +28,37 @@ export default function TodayTraining(props)
         }
     },[selectedExercise]);
 
-
     const onExerciseDone = () => {
         let cloneData = exercises.slice();
         cloneData.forEach(function(obj) {
             if(obj.id === selectedExercise.id)
+            {
                 obj.done = true;
+            }
             return obj;
-            });
+        });
         
         setExercises(cloneData);
         setSelectedExercise(null);
     }
 
-    const skipCurrentExercise = () => {
+    const skipCurrentExercise = (exerciseId) => {
         const cloneData = exercises.slice();
         cloneData.forEach(function(obj) {
-            if(obj.id === currentExercise.id)
+            if(obj.id === exerciseId)
+            {
                 obj.skipped = true;
-                return obj;
-            });
+            }
+            return obj;
+        });
         setExercises(cloneData);
     }
 
     return (
         <>
-            {exercises && !selectedExercise && 
+            {exercises && !selectedExercise &&
             <>
-                <Text style={styles.titles}>{day} workout</Text>
+                <Text style={styles.titles}>{dayName} workout</Text>
                 <SafeAreaView>
                     <ScrollView>
                         {exercises.map(exercise => 
@@ -67,7 +70,7 @@ export default function TodayTraining(props)
                                         uri: exercise.image
                                     }}
                                 />
-                                {!exercise.done ? 
+                                {!exercise.done && !exercise.skipped &&
                                     <View style={styles.actionButtons}>
                                         <Button 
                                             icon={
@@ -95,11 +98,12 @@ export default function TodayTraining(props)
                                             type="outline"
                                             title="Skip" 
                                             buttonStyle={{borderRadius: 10}}
-                                            onPress={() => skipCurrentExercise()}
+                                            onPress={() => skipCurrentExercise(exercise.id)}
                                         />
-                                    </View> :
-                                    (<Text style={styles.header}>Completed!!</Text>)
+                                    </View>
                                 }
+                                {exercise.done && (<Text style={styles.header}>Completed!</Text>)}
+                                {exercise.skipped && (<Text style={styles.header}>Skipped!</Text>)}
                             </Card>
                         )}
                     </ScrollView>
@@ -148,3 +152,4 @@ const styles = StyleSheet.create({
       marginTop: 10
     }
   });
+  

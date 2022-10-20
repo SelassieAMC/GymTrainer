@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import { StyleSheet, View, FlatList, Text, Modal } from "react-native";
+import { StyleSheet, View, FlatList, Text, Modal, Alert } from "react-native";
 import { Button } from "react-native-elements";
 import { Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import Dropdown from "../common/Dropdown";
 import ExerciseCard from "./ExerciseCard";
+import { GetCurrentDayNumberAndName } from "../common/helpers/Utils";
+import Routines from "../common/helpers/Routines";
 
 export default function Exercises(props)
 {
-
+    const dayInfo = GetCurrentDayNumberAndName();
     const [modalVisible, setModalVisible] = useState(false);
+    const [todayExercises, setTodayExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === dayInfo[0]));
+    const [selectedExercise, setSelectedExercise] = useState(null);
 
     const DATA = [
         {
@@ -42,55 +46,87 @@ export default function Exercises(props)
             name : 'Prensa una pierna',
             image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
             muscles : ['Cuadricep', 'femoral', 'gluteo']
+        },
+        {
+            id:50,
+            name : 'Prensa una pierna new test',
+            image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
+            muscles : ['Cuadricep', 'femoral', 'gluteo']
         }
     ];
 
     const addRoutineOptions = [
-        { label: 'Just today', value: '1' },
-        { label: '{Name of the day}(s) routine', value: '2' },
-        { label: 'Specific days', value: '3' }
+        { label: 'Just today', value: 1 },
+        { label: dayInfo[1] + '`s routine', value: 2 },
+        { label: 'Specific days', value: 3 }
     ];
 
-    const actionButtons = () =>
-        (
-            <View style={{width: 200, alignSelf: 'center', height: 90, justifyContent: 'space-between', marginTop: 5, paddingBottom: 5}}>
-                <Button 
-                    icon={
-                        <FontAwesome
-                            name="calendar-plus"
-                            solid
-                            size={19}
-                            style={{marginRight:5}}
-                            color='#FDB10E'
-                        />
-                    }
-                    title='Add to your routine'
-                    type="outline" 
-                    buttonStyle={{borderRadius: 10}}
-                    onPress={() => setModalVisible(true)}
-                />
-                <Button
-                    icon={
-                        <FontAwesome
-                            name="search"
-                            solid
-                            size={19}
-                            style={{marginRight:5}}
-                            color='#FDB10E'
-                        />
-                    }
-                    title='Find similars'
-                    type="outline" 
-                    buttonStyle={{borderRadius: 10}}
-                />
-            </View>
-        );
+    const handleActionButton = (exerciseItem) => {
+        setModalVisible(true);
+        setSelectedExercise(exerciseItem);
+    }
+
+    const actionButtons = (exerciseItem) => (
+        <View style={{width: 200, alignSelf: 'center', height: 90, justifyContent: 'space-between', marginTop: 5, paddingBottom: 5}}>
+            <Button 
+                icon={
+                    <FontAwesome
+                        name="calendar-plus"
+                        solid
+                        size={19}
+                        style={{marginRight:5}}
+                        color='green'
+                    />
+                }
+                title='Add to your routine'
+                type="outline" 
+                buttonStyle={{borderRadius: 10}}
+                onPress={() => handleActionButton(exerciseItem)}
+            />
+            <Button
+                icon={
+                    <FontAwesome
+                        name="search"
+                        solid
+                        size={19}
+                        style={{marginRight:5}}
+                        color='green'
+                    />
+                }
+                title='Find similars'
+                type="outline" 
+                buttonStyle={{borderRadius: 10}}
+            />
+        </View>
+    );
 
     const renderItem = ({item}) => (
         <View>
             <ExerciseCard item={item} actions={actionButtons}/>
         </View>
     );
+
+    const handleAddRoutineAction = function (action, resetAction)
+    {
+        switch(action)
+        {
+            case 1: addExerciseToRoutine(resetAction);  break;
+            case 2: Alert.alert(action + 'day selected'); break;
+            case 3: Alert.alert(action + 'specific selected'); break;
+        }
+    }
+
+    const addExerciseToRoutine = (resetAction) => {
+        if(todayExercises.filter(x => x.id == selectedExercise.id).length > 0)
+        {
+            Alert.alert('Alert', 'The exercise is already in the today routine.');
+            resetAction(0);
+        }
+        else
+        {
+            setTodayExercises([...todayExercises, selectedExercise]);
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -104,7 +140,7 @@ export default function Exercises(props)
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalText}>Modal to add routine to the day or week</Text>
-                        <Dropdown data={addRoutineOptions}/>
+                        <Dropdown data={addRoutineOptions} iconName="calendar-times" onSelectedValue={(value, resetter) => handleAddRoutineAction(value, resetter) }/>
                         <View style={{flexDirection: "row", width: 200, alignSelf: 'center', justifyContent: 'space-between', marginTop: 20}}>
                             <Button 
                                 icon={
@@ -165,7 +201,6 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         alignSelf: 'center'
     },
-//check what is really needed
     centeredView: {
         flex: 1,
         justifyContent: "center",

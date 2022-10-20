@@ -5,13 +5,18 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 
 export default function CustomDropdown(props)
 {
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState(props.defaultValue);
+
+    const handleOnChange = (value) => {
+        setValue(value);
+        props.onSelectedValue(value, setValue);
+    }
 
     return (
         <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
+            style={[styles.dropdown, props.dropdownStyle]}
+            placeholderStyle={[styles.placeholderStyle, props.placeholderStyle]}
+            selectedTextStyle={[styles.selectedTextStyle, props.selectedTextStyle]}
             iconStyle={styles.arrowIconStyle}
             itemTextStyle={styles.itemStyle}
             data={props.data}
@@ -20,12 +25,13 @@ export default function CustomDropdown(props)
             searchPlaceholder="Search..."
             value={value}
             onChange={item => {
-            setValue(item.value);
+                handleOnChange(item.value);
             }}
             renderLeftIcon={() => (
+                props.iconName &&
                 <FontAwesome
                     style={styles.icon}
-                    name="calendar-times"
+                    name={props.iconName}
                     size={20}
                 />
             )}
@@ -47,7 +53,7 @@ const styles = StyleSheet.create({
         color: '#FDB10E'
     },
     placeholderStyle: {
-        fontSize: 15
+        fontSize: 16
     },
     selectedTextStyle: {
         fontSize: 14

@@ -74,6 +74,18 @@ export default function Dashboard( { navigation })
             <View>
                 <Card containerStyle={styles.newsCardRecord}>
                     <Card.Title h3 style={styles.cardTitle}>Tips and news</Card.Title>
+                    <View style={styles.subTipCard}>
+                        <Image
+                            style={styles.newsImage}
+                            source={{
+                                uri: Image.resolveAssetSource(improveDietImage).uri
+                            }}
+                        />
+                        <Text style={styles.newsText}>
+                            A good shape comes with a good diet, healthy food could help you to pottencialize your training gaining more energy with less fat.
+                        </Text>
+                    </View>
+                    <Divider/>
                     <TouchableOpacity onPress={() => navigation.navigate('ScheduleRoutine')}>
                         <View style={styles.subTipCard}>
                             <Image
@@ -87,18 +99,6 @@ export default function Dashboard( { navigation })
                             </Text>
                         </View>
                     </TouchableOpacity>
-                    <Divider/>
-                    <View style={styles.subTipCard}>
-                        <Image
-                            style={styles.newsImage}
-                            source={{
-                                uri: Image.resolveAssetSource(improveDietImage).uri
-                            }}
-                        />
-                        <Text style={styles.newsText}>
-                            A good shape comes with a good diet, healthy food could help you to pottencialize your training gaining more energy with less fat.
-                        </Text>
-                    </View>
                     <Divider/>
                     <View style={styles.subTipCard}>
                         <Image
