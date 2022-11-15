@@ -34,11 +34,11 @@ export default function ExerciseCard(props)
                 </View>
                 <Divider/>
                 <View style={styles.musclesContainer}>
-                    {item.muscles.map((muscle, index) => {
+                    {item.musclesWorked?.map(muscle => {
                         return (
-                        <View style={styles.muscleContainer} key={index}>
+                        <View style={styles.muscleContainer} key={muscle.id}>
                             <FontAwesome name="check-circle" color={'green'} style={styles.muscleItemIcon} size={15} solid/>
-                            <Text>{muscle}</Text>
+                            <Text>{muscle.name}</Text>
                         </View>)
                     })}
                 </View>
@@ -62,8 +62,9 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     image: {
-        borderRadius: 10,
-        resizeMode: 'stretch'
+        width: null,
+        resizeMode: 'contain',
+        height: 220
     },
     musclesContainer: {
         flexDirection: "row",

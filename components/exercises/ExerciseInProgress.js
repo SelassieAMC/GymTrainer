@@ -1,10 +1,10 @@
 import React, { useLayoutEffect, useState } from "react";
 import { Button, Text } from "react-native-elements";
-import { StyleSheet, TouchableOpacity, View, Image, TextInput, FlatList, LogBox } from "react-native";
+import {StyleSheet, TouchableOpacity, View, Image, TextInput, FlatList, LogBox, SafeAreaView} from "react-native";
 import CustomDropdown from "../common/Dropdown";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { Title } from "react-native-paper";
+import darkStyles from '../common/DarkStyles';
 
 LogBox.ignoreLogs(['Warning: Failed prop type: Invalid prop `style` of type `array` supplied to `Cell`, expected `object`.']);
 
@@ -118,7 +118,7 @@ export default function ExerciseInProgress(props)
       );
 
     return (
-        <View>
+        <SafeAreaView style={darkStyles.backgroundDark}>
             <Image
             style={{width: '100%', height:150, alignSelf:'center'}}
                 source={{
@@ -180,7 +180,7 @@ export default function ExerciseInProgress(props)
                     title='Finish'
                 />
             </View>)}
-        </View>
+        </SafeAreaView>
     );
 }
 

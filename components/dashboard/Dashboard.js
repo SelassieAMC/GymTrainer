@@ -1,36 +1,22 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image, Text } from "react-native"
+import {View, StyleSheet, ScrollView, TouchableOpacity, Image, Text, SafeAreaView} from "react-native"
 import { Card } from "react-native-elements";
-import fireImage from '../../images/dashboard/fire-muscle.png';
+import CustomCardBackground from '../common/Card';
+import streakImage from '../../images/dashboard/streak-days.jpg';
 import chestImage from '../../images/dashboard/arm-icon.png';
 import legImage from '../../images/dashboard/legs-icon.png';
 import trainingPlanImage from '../../images/dashboard/training-plan.jpg';
 import improveDietImage from '../../images/dashboard/improve-diet.jpeg';
 import bestTrainingImage from '../../images/dashboard/best-training.jpg';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
+import darkStyles from '../common/DarkStyles';
 
 export default function Dashboard( { navigation })
 {
     return (
+        <SafeAreaView style={darkStyles.backgroundDark}>
         <ScrollView>
-            <View>
-                <Card containerStyle={styles.streakCardRecord}>
-                    <Card.Title h4 style={styles.cardTitle}>Daily record</Card.Title>
-                    <View style={{flexDirection:'row'}}>
-                        <Image
-                            style={styles.streakImage}
-                            source={{
-                                uri: Image.resolveAssetSource(fireImage).uri
-                            }}
-                        />
-                        <View style={styles.mainCardTextData}>
-                            <Text style={styles.mainCardText}>
-                                X streak days
-                            </Text>
-                        </View>
-                    </View>
-                </Card>
-            </View>
+            <CustomCardBackground backgroundImage={streakImage} icon1='arrow' title="Your record"/>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Card containerStyle={styles.mostWorkedCardRecord}>
                     <Card.Title h5 style={styles.cardTitle}>Most worked area</Card.Title>
@@ -114,6 +100,7 @@ export default function Dashboard( { navigation })
                 </Card>
             </View>
         </ScrollView>
+        </SafeAreaView>
     )
 }
 

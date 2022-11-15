@@ -7,9 +7,10 @@ import ExerciseInProgress from '../exercises/ExerciseInProgress';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { GetCurrentDayNumberAndName } from "../common/helpers/Utils";
 import { useIsFocused } from "@react-navigation/native";
+import darkStyles from '../common/DarkStyles';
+import {Title} from "react-native-paper";
 
 export const SLIDER_WIDTH = Dimensions.get('window').width + 80
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7)
 
 export default function TodayTraining(props)
 {
@@ -55,10 +56,10 @@ export default function TodayTraining(props)
     }
 
     return (
-        <>
+        <SafeAreaView style={darkStyles.backgroundDark}>
             {exercises && !selectedExercise &&
             <>
-                <Text style={styles.titles}>{dayName} workout</Text>
+                <Title style={darkStyles.bigTitle}>{dayName} workout</Title>
                 <SafeAreaView>
                     <ScrollView>
                         {exercises.map(exercise => 
@@ -115,7 +116,7 @@ export default function TodayTraining(props)
                     <ExerciseInProgress selectedExercise={selectedExercise} onExerciseDone={onExerciseDone} onExit={() => setSelectedExercise(null)} navigation={props.navigation}/>
                 </SafeAreaView>
             }
-        </>
+        </SafeAreaView>
     )
 }
 
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         alignSelf: 'center',
-        color: '#19204E',
+        color: '#fff',
         marginTop: 10,
         marginLeft:10,
         marginBottom: -40

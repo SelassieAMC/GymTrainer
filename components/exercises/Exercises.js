@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { StyleSheet, View, FlatList, Text, Modal, Alert } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, FlatList, Text, Modal, Alert, SafeAreaView } from "react-native";
 import { Button } from "react-native-elements";
 import { Title } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import Dropdown from "../common/Dropdown";
 import ExerciseCard from "./ExerciseCard";
 import { GetCurrentDayNumberAndName } from "../common/helpers/Utils";
 import Routines from "../common/helpers/Routines";
+import darkStyles from '../common/DarkStyles';
 
 export default function Exercises(props)
 {
@@ -15,45 +15,24 @@ export default function Exercises(props)
     const [modalVisible, setModalVisible] = useState(false);
     const [todayExercises, setTodayExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === dayInfo[0]));
     const [selectedExercise, setSelectedExercise] = useState(null);
+    const [exercisesData, setExercisesData] = useState([]);
 
-    const DATA = [
-        {
-            id: 1,
-            name : 'Prensa una pierna',
-            image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
-            muscles : ['Cuadricep', 'femoral', 'gluteo']
-        },
-        {
-            id:2,
-            name : 'Prensa una pierna',
-            image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
-            muscles : ['Cuadricep', 'femoral', 'gluteo']
-        },
-        {
-            id:3,
-            name : 'Prensa una pierna',
-            image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
-            muscles : ['Cuadricep', 'femoral', 'gluteo']
-        },
-        {
-            id:4,
-            name : 'Prensa una pierna',
-            image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
-            muscles : ['Cuadricep', 'femoral', 'gluteo']
-        },
-        {
-            id:5,
-            name : 'Prensa una pierna',
-            image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
-            muscles : ['Cuadricep', 'femoral', 'gluteo']
-        },
-        {
-            id:50,
-            name : 'Prensa una pierna new test',
-            image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
-            muscles : ['Cuadricep', 'femoral', 'gluteo']
-        }
-    ];
+    const fetchData = () => {
+        return fetch("https://27a5-80-209-193-197.eu.ngrok.io/api/v1/exercises",
+            {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => setExercisesData(data))
+            .catch(error => console.log(error));
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const addRoutineOptions = [
         { label: 'Just today', value: 1 },
@@ -117,7 +96,7 @@ export default function Exercises(props)
     }
 
     const addExerciseToRoutine = (resetAction) => {
-        if(todayExercises.filter(x => x.id == selectedExercise.id).length > 0)
+        if(todayExercises.filter(x => x.id === selectedExercise.id).length > 0)
         {
             Alert.alert('Alert', 'The exercise is already in the today routine.');
             resetAction(0);
@@ -129,7 +108,7 @@ export default function Exercises(props)
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={darkStyles.backgroundDark}>
             <Modal
                 animationType="fade"
                 transparent={true}
@@ -184,17 +163,16 @@ export default function Exercises(props)
                 <Text>Type</Text>
                 <Text>Not done</Text>
             </View>
-            <FlatList
-                data={DATA}
+            {exercisesData && <FlatList
+                data={exercisesData}
                 renderItem={renderItem}
                 keyExtractor={item  =>  item.id}
-            />
+            />}
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    
     catalogTitle: {
         color: "#FDB10E",
         fontSize: 28,
