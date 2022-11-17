@@ -59,8 +59,8 @@ export default function TodayTraining(props)
         <SafeAreaView style={darkStyles.backgroundDark}>
             {exercises && !selectedExercise &&
             <>
-                <Title style={darkStyles.bigTitle}>{dayName} workout</Title>
-                <SafeAreaView>
+                <Title style={[darkStyles.bigTitle, {marginTop: 20}]}>{dayName} workout</Title>
+                <View>
                     <ScrollView>
                         {exercises.map(exercise => 
                             <Card containerStyle={styles.cardContainer} key={exercise.id}>
@@ -72,18 +72,20 @@ export default function TodayTraining(props)
                                     }}
                                 />
                                 {!exercise.done && !exercise.skipped &&
-                                    <View style={styles.actionButtons}>
+                                    <View style={styles.actionButtonContainer}>
                                         <Button 
                                             icon={
                                                 <Icon
                                                     name="play-circle"
                                                     size={19}
-                                                    color="#FDB10E"
+                                                    color="#FFF"
                                                     style={{marginRight:10}}
                                                 />
                                             }
-                                            type="outline" 
-                                            buttonStyle={{borderRadius: 10}}
+                                            type="outline"
+                                            containerStyle={styles.actionButton}
+                                            buttonStyle={darkStyles.button}
+                                            titleStyle={styles.textButton}
                                             title="Start" 
                                             onPress={() => setSelectedExercise(exercise)}
                                         />
@@ -92,13 +94,15 @@ export default function TodayTraining(props)
                                                 <Icon
                                                     name="times-circle"
                                                     size={19}
-                                                    color="#FDB10E"
+                                                    color="#FFF"
                                                     style={{marginRight:10}}
                                                 />
                                             }
                                             type="outline"
-                                            title="Skip" 
-                                            buttonStyle={{borderRadius: 10}}
+                                            title="Skip"
+                                            containerStyle={styles.actionButton}
+                                            buttonStyle={darkStyles.button}
+                                            titleStyle={styles.textButton}
                                             onPress={() => skipCurrentExercise(exercise.id)}
                                         />
                                     </View>
@@ -108,7 +112,7 @@ export default function TodayTraining(props)
                             </Card>
                         )}
                     </ScrollView>
-                </SafeAreaView>
+                </View>
             </> 
             }
             {selectedExercise && 
@@ -131,8 +135,9 @@ const styles = StyleSheet.create({
         marginBottom: -40
     },
     cardContainer: {
-      borderRadius: 10,
-      borderWidth: 5
+        borderRadius: 10,
+        borderWidth: 0, 
+        backgroundColor: '#242538'
     },
     image: {
         borderRadius: 10,
@@ -141,16 +146,24 @@ const styles = StyleSheet.create({
        alignSelf: 'center'
     },
     header: {
-      color: "#FDB10E",
+      color: "#40d876",
       fontSize: 22,
       paddingLeft: 20
     },
-    actionButtons: {
+    actionButtonContainer: {
       justifyContent: 'space-between',
       height: 85,
       width: 150,
       alignSelf: 'center',
       marginTop: 10
-    }
+    },
+    actionButton: {
+        backgroundColor: '#40d876'
+    },
+    textButton: {
+        color: '#131429',
+        fontSize: 18,
+        fontWeight: '400'
+    },
   });
   

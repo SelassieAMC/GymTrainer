@@ -23,6 +23,13 @@ const darkStyles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 30
     },
+    bigTitleWithSafeAre: {
+        color: "#FDB10E",
+        fontSize: 28,
+        paddingLeft: 20,
+        alignSelf: 'center',
+        marginBottom: 30
+    },
     button: {
         borderColor: '#40d876'
     }

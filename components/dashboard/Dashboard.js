@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView, TouchableOpacity, Image, Text, SafeAreaView} from "react-native"
 import { Card } from "react-native-elements";
-import CustomCardBackground from '../common/Card';
+import CustomCardBackground from '../common/CustomCardBackground';
 import streakImage from '../../images/dashboard/streak-days.jpg';
-import chestImage from '../../images/dashboard/arm-icon.png';
-import legImage from '../../images/dashboard/legs-icon.png';
+import chestImage from '../../images/dashboard/today-background.jpeg';
+import legImage from '../../images/dashboard/today-background.jpeg';
 import trainingPlanImage from '../../images/dashboard/training-plan.jpg';
 import improveDietImage from '../../images/dashboard/improve-diet.jpeg';
 import bestTrainingImage from '../../images/dashboard/best-training.jpg';
@@ -16,46 +16,29 @@ export default function Dashboard( { navigation })
     return (
         <SafeAreaView style={darkStyles.backgroundDark}>
         <ScrollView>
-            <CustomCardBackground backgroundImage={streakImage} icon1='arrow' title="Your record"/>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Card containerStyle={styles.mostWorkedCardRecord}>
-                    <Card.Title h5 style={styles.cardTitle}>Most worked area</Card.Title>
-                    <View style={{flexDirection:'row'}}>
-                        <Image
-                            style={styles.mostWorkedImage}
-                            source={{
-                                uri: Image.resolveAssetSource(chestImage).uri
-                            }}
-                        />
-                        <View style={styles.cardTextData}>
-                            <Text style={styles.cardText}>
-                                Upper train
-                            </Text>
-                            <Text style={styles.cardText}>
-                                70 %
-                            </Text>
-                        </View>
-                    </View>
-                </Card>
-                <Card containerStyle={styles.lessWorkedCardRecord}>
-                    <Card.Title h5 style={styles.cardTitle}>Less worked area</Card.Title>
-                    <View style={{flexDirection:'row'}}>
-                        <Image
-                            style={styles.lessWorkedImage}
-                            source={{
-                                uri: Image.resolveAssetSource(legImage).uri
-                            }}
-                        />
-                        <View style={styles.cardTextData}>
-                            <Text style={styles.cardText}>
-                                Legs
-                            </Text>
-                            <Text style={styles.cardText}>
-                                50 %
-                            </Text>
-                        </View>
-                    </View>
-                </Card>
+            <CustomCardBackground
+                style={styles.streakCardRecord}
+                backgroundImage={streakImage} 
+                icon1='fire' 
+                icon2='clock' 
+                title='Your record' 
+                gradientColors={['rgba(0,0,0,0.9)', 'rgba(19, 20, 41, 0.5)', 'rgba(19, 20, 41, 0)']}
+                gradientLocations={[0, 0.9, 1]}/>
+            <View style={styles.recordContainer}>
+                <CustomCardBackground 
+                    style={styles.mostWorkedCard}
+                    titleStyle={styles.recordTitle}
+                    backgroundImage={chestImage} 
+                    title='Most worked area' 
+                    gradientColors={['rgba(22,154,19,0.8)', 'rgba(19, 20, 41, 0.5)', 'rgba(19, 20, 41, 0)']}
+                    gradientLocations={[0, 0.9, 1]}/>
+                <CustomCardBackground 
+                    style={styles.lessWorkedCard}
+                    titleStyle={styles.recordTitle}
+                    backgroundImage={legImage} 
+                    title='Less worked area' 
+                    gradientColors={['rgba(253,177,14,0.8)', 'rgba(19, 20, 41, 0.5)', 'rgba(19, 20, 41, 0)']}
+                    gradientLocations={[0, 0.9, 1]}/> 
             </View>
             <View>
                 <Card containerStyle={styles.newsCardRecord}>
@@ -71,7 +54,7 @@ export default function Dashboard( { navigation })
                             A good shape comes with a good diet, healthy food could help you to pottencialize your training gaining more energy with less fat.
                         </Text>
                     </View>
-                    <Divider/>
+                    <Divider color='#40d876'/>
                     <TouchableOpacity onPress={() => navigation.navigate('ScheduleRoutine')}>
                         <View style={styles.subTipCard}>
                             <Image
@@ -85,7 +68,7 @@ export default function Dashboard( { navigation })
                             </Text>
                         </View>
                     </TouchableOpacity>
-                    <Divider/>
+                    <Divider color='#40d876'/>
                     <View style={styles.subTipCard}>
                         <Image
                             style={styles.newsImage}
@@ -106,61 +89,37 @@ export default function Dashboard( { navigation })
 
 const styles = StyleSheet.create({
     streakCardRecord: {
-        backgroundColor: '#00A0FE',
-        borderRadius: 10
+        marginLeft: 15,
+        marginRight: 15
     },
-    streakImage: {
-        width: 80,
-        height:80
-    },
-    mainCardTextData: {
-        flex: 1,
+    recordTitle: {
         justifyContent: 'center',
-        alignContent: 'flex-end'
-    },
-    mainCardText: {
-        color: 'black',
-        fontSize: 40,
-        textAlign: 'right'
-    },
-    cardTextData: {
-        justifyContent: 'center',
+        fontSize: 16,
         alignContent: 'flex-end',
         marginLeft: 10,
         flexShrink: 1
     },
-    mostWorkedCardRecord: {
-        flex: 1,
-        backgroundColor: '#FDB10E',
-        borderRadius: 10
+    recordContainer: {
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        marginLeft: 15,
+        marginRight: 15
     },
-    mostWorkedImage: {
-        width: 60,
-        height: 60
+    mostWorkedCard: {
+        width: '45%'
     },
-    lessWorkedCardRecord: {
-        flex: 1,
-        backgroundColor: '#169A13',
-        borderRadius: 10
-    },
-    lessWorkedImage: {
-        width: 60,
-        height:80
+    lessWorkedCard: {
+        width: '45%'
     },
     cardTitle: {
         textAlign: 'left',
         color: '#FFFFFF'
     },
-    cardText: {
-        color: 'black',
-        fontSize: 16,
-        textAlign: 'center',
-        flexShrink: 1
-    },
     newsCardRecord: {
-        backgroundColor: '#19204E',
+        backgroundColor: '#242538',
         color: 'white',
-        borderRadius: 10
+        borderRadius: 10,
+        borderWidth: 0 
     },
     newsImage: {
         width: '80%',
