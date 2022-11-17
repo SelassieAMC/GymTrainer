@@ -33,6 +33,7 @@ export default function CustomCardBackground(props){
                                 name='clock'
                                 light
                                 size={24}
+                                style={{marginRight:10}}
                                 color='green'
                             />
                             <Text style={styles.text}>47 min.</Text>
