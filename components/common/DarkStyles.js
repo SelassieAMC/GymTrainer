@@ -5,6 +5,9 @@ const darkStyles = StyleSheet.create({
     textWhite:{
         color: '#fff'
     },
+    textGreen:{
+        color: '#40d876'
+    },
     backgroundDark: {
         backgroundColor: '#131429',
         height: '100%'

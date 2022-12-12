@@ -1,4 +1,4 @@
-import {TextInput, Text, StyleSheet, ImageBackground, ScrollView, View} from "react-native";
+import {TextInput, Text, StyleSheet, ImageBackground, ScrollView, View, Alert} from "react-native";
 import Dropdown from "../../common/Dropdown";
 import React, {useEffect, useState} from "react";
 import {Button} from "react-native-elements";
@@ -11,12 +11,13 @@ export default function AddExercise()
 {
     const [categories, setCategories] = useState([]);
     const [muscles, setMuscles] = useState([]);
+    const [exerciseData, setExerciseData] = useState({});
     
     const [selectedCategories, setSelectedCats] = useState([]);
     const [selectedMuscles, setSelectedMuscles] = useState([]);
 
     const fetchCategories = () => {
-        return fetch("https://27a5-80-209-193-197.eu.ngrok.io/api/v1/categories",
+        return fetch("https://50fd-191-108-26-17.ngrok.io/api/v1/categories",
             {
                 method: 'GET',
                 headers: {
@@ -29,7 +30,7 @@ export default function AddExercise()
     };
 
     const fetchMuscles = () => {
-        return fetch("https://27a5-80-209-193-197.eu.ngrok.io/api/v1/muscles",
+        return fetch("https://50fd-191-108-26-17.ngrok.io/api/v1/muscles",
             {
                 method: 'GET',
                 headers: {
@@ -41,10 +42,24 @@ export default function AddExercise()
             .catch(error => console.log(error));
     };
     
-    useEffect(()=> {
+    useEffect(()=> {//
        fetchMuscles();
        fetchCategories();
     },[])
+    
+    const saveExercise = () => {
+        fetch("https://7d45-191-111-30-36.ngrok.io/api/v1/exercises",
+            {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(exerciseData)
+            })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
+    }
     
     return (
         <View style={darkStyles.backgroundDark}>
@@ -55,9 +70,25 @@ export default function AddExercise()
                         { categories.length > 0 && muscles.length > 0 &&
                             <ScrollView style={styles.container}>
                                 <Title style={darkStyles.bigTitle}>Create an exercise</Title>
-                                <TextInput placeholder="Name" placeholderTextColor="#8c8c8c" style={[styles.text, styles.input]}/>
-                                <TextInput placeholder="Url Image" placeholderTextColor="#8c8c8c" style={[styles.text, styles.input]}/>
-                                <TextInput placeholder="Description" multiline={true} placeholderTextColor="#8c8c8c" style={[styles.text, styles.input, styles.multiLine]}/>
+                                <TextInput 
+                                    placeholder="Name" 
+                                    value={exerciseData.name} 
+                                    onChangeText={(val) => setExerciseData({...exerciseData, name: val})} 
+                                    placeholderTextColor="#8c8c8c" 
+                                    style={[styles.text, styles.input]}/>
+                                <TextInput 
+                                    placeholder="Url Image"
+                                    value={exerciseData.image}
+                                    onChangeText={(val) => setExerciseData({...exerciseData, image: val})}
+                                    placeholderTextColor="#8c8c8c" 
+                                    style={[styles.text, styles.input]}/>
+                                <TextInput 
+                                    placeholder="Description" 
+                                    multiline={true}
+                                    value={exerciseData.description}
+                                    onChangeText={(val) => setExerciseData({...exerciseData, description: val})}
+                                    placeholderTextColor="#8c8c8c" 
+                                    style={[styles.text, styles.input, styles.multiLine]}/>
                                 <Text style={styles.text}>Categories</Text>
                                 <Dropdown
                                     data={categories}
@@ -67,8 +98,10 @@ export default function AddExercise()
                                     label={"name"}
                                     value={"id"}
                                     iconName="calendar-times"
-                                    onSelectedValue={value => setSelectedCats(value) }/>
-
+                                    onSelectedValue={values => 
+                                        setExerciseData(
+                                            {...exerciseData, 
+                                                categories: values.map(val => { return { id: val }})})}/>
                                 <Text style={styles.text}>Muscles</Text>
                                 <Dropdown
                                     data={muscles}
@@ -78,10 +111,14 @@ export default function AddExercise()
                                     value={"id"}
                                     iconName="calendar-times"
                                     selectedTextStyle={darkStyles.textWhite}
-                                    onSelectedValue={value => setSelectedMuscles(value) }/>
+                                    onSelectedValue={values => 
+                                        setExerciseData(
+                                            {...exerciseData,
+                                                musclesWorked: values.map(val => { return{ id: val }})})}/>
                                 <Button
                                     type="outline"
                                     title="Finish"
+                                    onPress={() =>saveExercise()}
                                     containerStyle={styles.submitButton}
                                     buttonStyle={darkStyles.button}
                                     titleStyle={styles.textButton}
@@ -102,7 +139,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#fff',
-        fontSize: 14,
+        fontSize: 18,
         padding: 10
     },
     input: {
@@ -125,8 +162,8 @@ const styles = StyleSheet.create({
     },
     textButton: {
         color: '#131429',
-        fontSize: 18,
-        fontWeight: '400'
+        fontSize: 22,
+        fontWeight: 'bold'
     },
     dropdown: {
         borderColor: '#40d876'

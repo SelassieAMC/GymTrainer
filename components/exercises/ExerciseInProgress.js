@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Text } from "react-native-elements";
-import {StyleSheet, TouchableOpacity, View, TextInput, FlatList, LogBox, SafeAreaView, ScrollView} from "react-native";
+import {StyleSheet, View, TextInput, FlatList, LogBox, SafeAreaView, ScrollView} from "react-native";
 import CustomDropdown from "../common/Dropdown";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Title } from "react-native-paper";
@@ -133,7 +133,7 @@ export default function ExerciseInProgress(props)
                         <Button
                             icon={
                                 <Icon
-                                    name="backward"
+                                    name="arrow-alt-circle-left"
                                     size={19}
                                     color="#FFF"
                                     style={{marginRight:10}}
@@ -167,7 +167,7 @@ export default function ExerciseInProgress(props)
                         <Button
                             icon={
                                 <Icon
-                                    name="forward"
+                                    name="arrow-alt-circle-right"
                                     size={19}
                                     color="#FFF"
                                     style={{marginRight:10}}
@@ -186,7 +186,7 @@ export default function ExerciseInProgress(props)
                         <Button
                             icon={
                                 <Icon
-                                    name="forward"
+                                    name="ban"
                                     size={19}
                                     color="#FFF"
                                     style={{marginRight:10}}
@@ -202,7 +202,7 @@ export default function ExerciseInProgress(props)
                         <Button
                             icon={
                                 <Icon
-                                    name="exit"
+                                    name="reply"
                                     size={19}
                                     color="#FFF"
                                     style={{marginRight:10}}

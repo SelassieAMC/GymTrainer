@@ -13,11 +13,11 @@ export default function ExerciseCard(props)
     return (
         <Card containerStyle={styles.cardContainer}>
             <Card.Title h4 style={{alignSelf: 'center' }}>
-                <View style={styles.cardTitle}>
+                <View style={styles.cardTitleContainer}>
                     <View style={{marginRight: 10}}>
                         <FontAwesome name="star" color={'orange'} size={25} solid={isFavorite} onPress={()=> setFavorite(!isFavorite)}/>
                     </View>
-                    <Title>{item.name}</Title>
+                    <Title style={styles.cardTitles}>{item.name}</Title>
                 </View>                    
             </Card.Title>
             <Card.Image
@@ -26,11 +26,10 @@ export default function ExerciseCard(props)
                     uri: item.image
                 }}
             />
-            <View
-                style={{borderStyle: 'solid', borderWidth: 1, borderTopWidth: 0, borderBottomLeftRadius: 5, borderBottomRightRadius: 5,borderColor: '#9B9A99', borderTopColor: 'none', padding: 5, marginTop: 10}}>
-                <View style={{flexDirection: "row", alignItems: "baseline", marginTop: 10}}>
+            <View style={styles.sectionsContainer}>
+                <View style={styles.muscleTitleContainer}>
                     <FontAwesome name="tags" color={'#FDB10E'} style={styles.muscleItemIcon} size={14} solid/>
-                    <Text style={{fontSize: 16}}>Set of muscles</Text>
+                    <Text style={[styles.cardTitles, {fontSize: 16}]}>Set of muscles</Text>
                 </View>
                 <Divider/>
                 <View style={styles.musclesContainer}>
@@ -38,17 +37,16 @@ export default function ExerciseCard(props)
                         return (
                         <View style={styles.muscleContainer} key={muscle.id}>
                             <FontAwesome name="check-circle" color={'green'} style={styles.muscleItemIcon} size={15} solid/>
-                            <Text>{muscle.name}</Text>
+                            <Text style={styles.cardText}>{muscle.name}</Text>
                         </View>)
                     })}
                 </View>
             </View>
 
-            <View
-                style={{borderStyle: 'solid', borderWidth: 1, borderTopWidth: 0, borderBottomLeftRadius: 5, borderBottomRightRadius: 5, borderColor: '#9B9A99', borderTopColor: 'none', padding: 5, marginTop: 10}}>
-                <View style={{flexDirection: "row", alignItems: "baseline", marginTop: 10}}>
+            <View style={styles.sectionsContainer}>
+                <View style={[styles.muscleContainer,{marginTop: 10}]}>
                     <FontAwesome name="tasks" color={'#FDB10E'} style={styles.muscleItemIcon} size={18} solid/>
-                    <Text style={{fontSize: 16}}>Actions</Text>
+                    <Text style={[styles.cardTitles, {fontSize: 16}]}>Actions</Text>
                     </View>
                 <Divider/>
                 {props.actions(item)}
@@ -59,19 +57,38 @@ export default function ExerciseCard(props)
 
 const styles = StyleSheet.create({
     cardContainer: {
-        borderRadius: 10
+        borderRadius: 10,
+        backgroundColor: '#242538',
+        borderWidth: 0
     },
     image: {
         width: null,
         resizeMode: 'contain',
         height: 220
     },
+    sectionsContainer: {
+        borderStyle: 'solid', 
+        borderWidth: 1, 
+        borderTopWidth: 0, 
+        borderBottomLeftRadius: 5, 
+        borderBottomRightRadius: 5,
+        borderColor: '#9B9A99',
+        borderTopColor: 'none',
+        padding: 5,
+        marginTop: 10
+    },
+    muscleTitleContainer: {
+        flexDirection: "row", 
+        alignItems: "baseline", 
+        marginTop: 10
+    },
     musclesContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 10,
         paddingLeft: 15,
-        paddingRight: 15
+        paddingRight: 15,
+        flexWrap: 'wrap'
     },
     muscleContainer: {
         flexDirection: "row",
@@ -81,9 +98,15 @@ const styles = StyleSheet.create({
         marginRight: 5,
         marginBottom: 5
     }, 
-    cardTitle: {
+    cardTitleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    cardText: {
+        color: '#FFF'
+    },
+    cardTitles: {
+        color: '#40d876'
     }
 });

@@ -3,8 +3,8 @@ import {View, StyleSheet, ScrollView, TouchableOpacity, Image, Text, SafeAreaVie
 import { Card } from "react-native-elements";
 import CustomCardBackground from '../common/CustomCardBackground';
 import streakImage from '../../images/dashboard/streak-days.jpg';
-import chestImage from '../../images/dashboard/today-background.jpeg';
-import legImage from '../../images/dashboard/today-background.jpeg';
+import mostWorkedBackground from '../../images/dashboard/mostWorked.jpg';
+import lessWorkedBackground from '../../images/dashboard/lessWorked.jpg';
 import trainingPlanImage from '../../images/dashboard/training-plan.jpg';
 import improveDietImage from '../../images/dashboard/improve-diet.jpeg';
 import bestTrainingImage from '../../images/dashboard/best-training.jpg';
@@ -28,16 +28,16 @@ export default function Dashboard( { navigation })
                 <CustomCardBackground 
                     style={styles.mostWorkedCard}
                     titleStyle={styles.recordTitle}
-                    backgroundImage={chestImage} 
+                    backgroundImage={mostWorkedBackground} 
                     title='Most worked area' 
-                    gradientColors={['rgba(22,154,19,0.8)', 'rgba(19, 20, 41, 0.5)', 'rgba(19, 20, 41, 0)']}
+                    gradientColors={['rgba(22,154,19,0.4)', 'rgba(19, 20, 41, 0.5)', 'rgba(19, 20, 41, 0)']}
                     gradientLocations={[0, 0.9, 1]}/>
                 <CustomCardBackground 
                     style={styles.lessWorkedCard}
                     titleStyle={styles.recordTitle}
-                    backgroundImage={legImage} 
+                    backgroundImage={lessWorkedBackground} 
                     title='Less worked area' 
-                    gradientColors={['rgba(253,177,14,0.8)', 'rgba(19, 20, 41, 0.5)', 'rgba(19, 20, 41, 0)']}
+                    gradientColors={['rgba(253,177,14,0.4)', 'rgba(19, 20, 41, 0.5)', 'rgba(19, 20, 41, 0.8)']}
                     gradientLocations={[0, 0.9, 1]}/> 
             </View>
             <View>

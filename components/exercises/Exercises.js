@@ -9,7 +9,7 @@ import { GetCurrentDayNumberAndName } from "../common/helpers/Utils";
 import Routines from "../common/helpers/Routines";
 import darkStyles from '../common/DarkStyles';
 
-export default function Exercises(props)
+export default function Exercises()
 {
     const dayInfo = GetCurrentDayNumberAndName();
     const [modalVisible, setModalVisible] = useState(false);
@@ -18,7 +18,7 @@ export default function Exercises(props)
     const [exercisesData, setExercisesData] = useState([]);
 
     const fetchData = () => {
-        return fetch("https://27a5-80-209-193-197.eu.ngrok.io/api/v1/exercises",
+        return fetch("https://3463-191-108-26-17.ngrok.io/api/v1/exercises/get-all",
             {
                 method: 'GET',
                 headers: {
@@ -46,7 +46,7 @@ export default function Exercises(props)
     }
 
     const actionButtons = (exerciseItem) => (
-        <View style={{width: 200, alignSelf: 'center', height: 90, justifyContent: 'space-between', marginTop: 5, paddingBottom: 5}}>
+        <View style={styles.actionButtonsContainer}>
             <Button 
                 icon={
                     <FontAwesome
@@ -58,8 +58,10 @@ export default function Exercises(props)
                     />
                 }
                 title='Add to your routine'
-                type="outline" 
-                buttonStyle={{borderRadius: 10}}
+                type="outline"
+                containerStyle={styles.actionButtonContainer}
+                buttonStyle={darkStyles.button}
+                titleStyle={styles.textButton}
                 onPress={() => handleActionButton(exerciseItem)}
             />
             <Button
@@ -73,8 +75,10 @@ export default function Exercises(props)
                     />
                 }
                 title='Find similars'
-                type="outline" 
-                buttonStyle={{borderRadius: 10}}
+                type="outline"
+                containerStyle={styles.actionButtonContainer}
+                buttonStyle={darkStyles.button}
+                titleStyle={styles.textButton}
             />
         </View>
     );
@@ -158,10 +162,10 @@ export default function Exercises(props)
             <Title style={styles.catalogTitle}>Exercises Catalog</Title>
             <Text>Filters</Text>
             <View flexDirection='row' justifyContent='space-around'>
-                <Text>Body part</Text>
-                <Text>Muscle</Text>
-                <Text>Type</Text>
-                <Text>Not done</Text>
+                <Text style={styles.textButton}>Body part</Text>
+                <Text style={styles.textButton}>Muscle</Text>
+                <Text style={styles.textButton}>Type</Text>
+                <Text style={styles.textButton}>Not done</Text>
             </View>
             {exercisesData && <FlatList
                 data={exercisesData}
@@ -199,5 +203,20 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
+    },
+    actionButtonContainer: {
+        marginTop: 10,
+        backgroundColor: '#40d876',
+        maxWidth: 160
+    },
+    textButton: {
+        color: '#131429',
+        fontSize: 14,
+        fontWeight: 'bold'
+    },
+    actionButtonsContainer: {
+        justifyContent: 'space-between', 
+        margin: 10,
+        flexDirection: 'row'
     }
   });

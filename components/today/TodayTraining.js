@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet, Dimensions, Text, ScrollView, View } from "react-native";
+import { StyleSheet, Text, ScrollView, View, SafeAreaView } from "react-native";
 import Routines from "../common/helpers/Routines";
 import { Button, Card } from "react-native-elements";
 import ExerciseInProgress from '../exercises/ExerciseInProgress';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { GetCurrentDayNumberAndName } from "../common/helpers/Utils";
-import { useIsFocused } from "@react-navigation/native";
 import darkStyles from '../common/DarkStyles';
 import {Title} from "react-native-paper";
 
-export const SLIDER_WIDTH = Dimensions.get('window').width + 80
-
 export default function TodayTraining(props)
 {
-    const [dayNumber, dayName] = GetCurrentDayNumberAndName();
+    const [dayNumber, dayName] = GetCurrentDayNumberAndName(); //create new card view - apply for in progress
     const day = props.dayNumber ? props.dayNumber-1 : dayNumber;
     const [exercises, setExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === day));
     const [selectedExercise, setSelectedExercise] = useState(null);
-    const isFocused = useIsFocused(); //Re-render the component
 
     useEffect(() => {
         if (!selectedExercise)
@@ -56,11 +51,11 @@ export default function TodayTraining(props)
     }
 
     return (
-        <SafeAreaView style={darkStyles.backgroundDark}>
+        <SafeAreaView style={[darkStyles.backgroundDark]}>
             {exercises && !selectedExercise &&
             <>
                 <Title style={[darkStyles.bigTitle, {marginTop: 20}]}>{dayName} workout</Title>
-                <View>
+                <>
                     <ScrollView>
                         {exercises.map(exercise => 
                             <Card containerStyle={styles.cardContainer} key={exercise.id}>
@@ -112,13 +107,13 @@ export default function TodayTraining(props)
                             </Card>
                         )}
                     </ScrollView>
-                </View>
+                </>
             </> 
             }
             {selectedExercise && 
-                <SafeAreaView>
+                <View>
                     <ExerciseInProgress selectedExercise={selectedExercise} onExerciseDone={onExerciseDone} onExit={() => setSelectedExercise(null)} navigation={props.navigation}/>
-                </SafeAreaView>
+                </View>
             }
         </SafeAreaView>
     )
