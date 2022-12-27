@@ -49,7 +49,9 @@ export default function ExerciseInProgress2(props)
             <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 10}}>
                 <Title style={{color: '#FFF', fontSize: 24, maxWidth: '70%'}}>{props.selectedExercise.name}</Title>
                         <View style={{flexDirection: 'row'}}>
+                            <CustomMenu/>
                             <Title style={{textAlign: "center", fontSize: 20, color: '#40d876'}}>Serie {serie+1}/{seriesCount}</Title>
+                            
                         </View>
             </View>
             <View style={{flexDirection: 'row', height: 350}}>
