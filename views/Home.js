@@ -30,7 +30,7 @@ export default function Home({ navigation }, props)
     }
     
     const fetchData = () => {
-        return fetch("https://3463-191-108-26-17.ngrok.io/api/v1/routine/get-all?includeExercises=false",
+        return fetch("https://a6bb-191-109-174-5.ngrok.io/api/v1/routine/get-all?includeExercises=false",
             {
                 method: 'GET',
                 headers: {
@@ -82,7 +82,7 @@ export default function Home({ navigation }, props)
                                         name="fire"
                                         solid
                                         size={22}
-                                        color='orange'
+                                        color='#E68D33'
                                     />
                                 </View>
                                 <Text style={styles.valueStat}>2.153</Text>
@@ -94,7 +94,7 @@ export default function Home({ navigation }, props)
                                         name="clock"
                                         solid
                                         size={22}
-                                        color='orange'
+                                        color='#E68D33'
                                     />
                                 </View>
                                 <Text style={styles.valueStat}>15H 39MIN</Text>
@@ -106,7 +106,7 @@ export default function Home({ navigation }, props)
                                         name="dumbbell"
                                         solid
                                         size={22}
-                                        color='orange'
+                                        color='#E68D33'
                                     />
                                 </View>
                                 <Text style={styles.valueStat}>67</Text>
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     valueRoutineLevel: {
-        color: 'orange',
+        color: '#E68D33',
         fontSize: 11,
         fontWeight: 'bold'
     },

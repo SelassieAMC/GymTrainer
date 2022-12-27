@@ -141,7 +141,8 @@ export default {
                     id: 1,
                     day : 1,
                     name : 'Prensa una pierna - dia 1',
-                    image : 'https://www.thingys.com.ar/gymapps/tutorial/beinpresse_45_grad%20(1).gif',
+                    image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
+                    presentationImage: 'https://www.cambiatufisico.com/wp-content/uploads/prensa-piernas.jpg',
                     muscle : 'Cuadricep, femoral, gluteo',
                     series: [
                         {
@@ -170,7 +171,8 @@ export default {
                     id : 2,
                     day : 1,
                     name : 'Peso muerto - dia 1',
-                    image : 'https://www.thingys.com.ar/gymapps/tutorial/peso_muerto.gif',
+                    image : 'https://www.cambiatufisico.com/wp-content/uploads/peso-muerto2.jpg',
+                    presentationImage: 'https://i.blogs.es/d61882/istock-891602094/1366_2000.jpg',
                     muscle : 'Femoral',
                     series: [
                         {
@@ -199,7 +201,8 @@ export default {
                     id : 3,
                     day : 1,
                     name : 'Aductores en polea - dia 1',
-                    image : 'https://www.thingys.com.ar/gymapps/tutorial/aduct.gif',
+                    image : 'https://www.cambiatufisico.com/wp-content/uploads/aductores-polea.jpg',
+                    presentationImage: 'https://www.nexofin.com/archivos/2017/10/abduccion-con-polea-1.jpg',
                     muscle : 'aductores',
                     series: [
                         {
@@ -228,7 +231,8 @@ export default {
                     id : 4,
                     day : 1,
                     name : 'Extension cuadriceps en maquina - dia 1',
-                    image : 'https://www.thingys.com.ar/gymapps/tutorial/camillazx.gif',
+                    image : 'https://www.cambiatufisico.com/wp-content/uploads/Extensiones-en-maquina.jpg',
+                    presentationImage: 'https://physiotutors.com/wp-content/uploads/2022/01/Seated-Leg-Extension.png',
                     muscle : 'cuadricep',
                     series: [
                         {

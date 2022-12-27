@@ -7,7 +7,7 @@ import {Title} from "react-native-paper";
 export default function CustomCardBackground(props){
     return (
         <View style={[styles.container, props.style]}>
-            <ImageBackground source={props.backgroundImage ? props.backgroundImage : {uri: props.uriImage}} style={styles.backgroundImage}>
+            <ImageBackground source={props.backgroundImage ? props.backgroundImage : {uri: props.uriImage}} style={[styles.backgroundImage, props.backgroundImageStyle]} resizeMode={props.imageResizeMode ?? 'contain'} >
                 {props.gradientColors ? 
                     <LinearGradient
                         colors={props.gradientColors}

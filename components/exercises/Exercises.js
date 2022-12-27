@@ -18,7 +18,7 @@ export default function Exercises()
     const [exercisesData, setExercisesData] = useState([]);
 
     const fetchData = () => {
-        return fetch("https://3463-191-108-26-17.ngrok.io/api/v1/exercises/get-all",
+        return fetch("https://a6bb-191-109-174-5.ngrok.io/api/v1/exercises/get-all",
             {
                 method: 'GET',
                 headers: {

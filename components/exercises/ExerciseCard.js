@@ -15,7 +15,7 @@ export default function ExerciseCard(props)
             <Card.Title h4 style={{alignSelf: 'center' }}>
                 <View style={styles.cardTitleContainer}>
                     <View style={{marginRight: 10}}>
-                        <FontAwesome name="star" color={'orange'} size={25} solid={isFavorite} onPress={()=> setFavorite(!isFavorite)}/>
+                        <FontAwesome name="star" color={'#E68D33'} size={25} solid={isFavorite} onPress={()=> setFavorite(!isFavorite)}/>
                     </View>
                     <Title style={styles.cardTitles}>{item.name}</Title>
                 </View>                    

@@ -17,10 +17,7 @@ export default function HomeStack()
         >
             <Stack.Screen 
               name="HomePage" 
-              component={Home}
-              options={{
-                tabBarStyle: DarkStyles.darkTabStyle,
-                headerShown: false}}/>
+              component={Home}/>
         </Stack.Navigator>
       );
 }

@@ -18,7 +18,7 @@ export default function UserTabs()
                 options={{
                     tabBarStyle: DarkStyles.darkTabStyle,
                     headerShown: false,
-                    tabBarIcon: () => (<FontAwesome name="home" color={'orange'} size={30} solid/>)
+                    tabBarIcon: () => (<FontAwesome name="home" color={'#E68D33'} size={30} solid/>)
                 }}/>
             <Tab.Screen
                 name='Today'
@@ -26,7 +26,7 @@ export default function UserTabs()
                 options={{
                     tabBarStyle: DarkStyles.darkTabStyle,
                     headerShown: false,
-                    tabBarIcon: () => (<FontAwesome name="calendar-day" color={'orange'} size={30} solid/>)
+                    tabBarIcon: () => (<FontAwesome name="calendar-day" color={'#E68D33'} size={30} solid/>)
                 }}/>
             <Tab.Screen
                 name="Exercises"
@@ -34,7 +34,7 @@ export default function UserTabs()
                 options={{
                     tabBarStyle: DarkStyles.darkTabStyle,
                     headerShown: false,
-                    tabBarIcon: () => (<FontAwesome name="dumbbell" color={'orange'} size={30} solid/>)
+                    tabBarIcon: () => (<FontAwesome name="dumbbell" color={'#E68D33'} size={30} solid/>)
                 }}/>
         </Tab.Navigator>
     );

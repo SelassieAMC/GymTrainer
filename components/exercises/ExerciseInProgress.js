@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, Text } from "react-native-elements";
-import {StyleSheet, View, TextInput, FlatList, LogBox, SafeAreaView, ScrollView} from "react-native";
-import CustomDropdown from "../common/Dropdown";
+import { StyleSheet, View, TextInput, FlatList, LogBox, SafeAreaView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Title } from "react-native-paper";
-import darkStyles from '../common/DarkStyles';
 import CustomCardBackground from "../common/CustomCardBackground";
+import CustomDropdown from "../common/Dropdown";
+import darkStyles from "../common/DarkStyles.js";
 
 LogBox.ignoreLogs(['Warning: Failed prop type: Invalid prop `style` of type `array` supplied to `Cell`, expected `object`.']);
 

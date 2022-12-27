@@ -8,18 +8,33 @@ import { Title } from "react-native-paper";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import { BackgroundImage } from "react-native-elements/dist/config";
 import LinearGradient from "react-native-linear-gradient";
+import ExerciseInProgress from "../components/exercises/ExerciseInProgress2";
 
 
-export default function TodaySession()
+export default function TodaySession({navigation})
 {
-    const [dayNumber, dayName] = GetCurrentDayNumberAndName(); //move inline styles to the StyleSheet, add start exercise with a new view, check how to go back from a route to the stack navigator
+    const [dayNumber, dayName] = GetCurrentDayNumberAndName(); //add start exercise with a new view, check how to go back from a route to the stack navigator
     const day = dayNumber;
     const [exercises, setExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === day));
     const [selectedExercise, setSelectedExercise] = useState(null);
+
+    const onExerciseDone = () => {
+        let cloneData = exercises.slice();
+        cloneData.forEach(function(obj) {
+            if(obj.id === selectedExercise.id)
+            {
+                obj.done = true;
+            }
+            return obj;
+        });
+
+        setExercises(cloneData);
+        setSelectedExercise(null);
+    }
     
     return(
         <SafeAreaView style={darkStyles.backgroundDark}>
-            <Title style={{color: '#FFF', alignSelf: 'center'}}>Today's Session</Title>
+            { !selectedExercise && <Title style={styles.mainTitle}>Today's Session</Title>}
             <ScrollView>
                 {exercises.map(exercise =>
                     <View key={exercise.id}>
@@ -31,7 +46,7 @@ export default function TodaySession()
                                 end={{ x: 1, y: 1 }}
                                 locations={[0, 0.5, 1]}>
                                 <View style={styles.exerciseDataContainer}>
-                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <View style={styles.exerciseTitleContainer}>
                                         <Text style={styles.exerciseTitle}>{exercise.name}</Text>
                                         <Button
                                             type="clear"
@@ -45,28 +60,28 @@ export default function TodaySession()
                                             }/>
                                     </View>
                                     <View style={styles.exerciseInfoContainer}>
-                                        <View style={{flexDirection: 'row', justifyContent: 'space-between', width: 80}}>
-                                            <View style={styles.cardInfoContainer}>
+                                        <View style={styles.cardContentContainer}>
+                                            <View style={styles.cardItemsContainer}>
                                                     <FontAwesome
                                                         name="clock"
                                                         solid
                                                         size={20}
-                                                        color='orange'
+                                                        color='#E68D33'
                                                     />
                                                     <FontAwesome
                                                         name="fire"
                                                         solid
                                                         size={20}
-                                                        color='orange'
+                                                        color='#E68D33'
                                                     />
                                                     <FontAwesome
                                                         name="dumbbell"
                                                         solid
                                                         size={19}
-                                                        color='orange'
+                                                        color='#E68D33'
                                                     />
                                             </View>
-                                            <View style={[styles.cardInfoContainer, {alignItems: 'flex-start'}]}>
+                                            <View style={[styles.cardItemsContainer, { alignItems: 'flex-start' }]}>
                                                 <Text style={styles.exerciseText}>{exercise.series.length} series</Text>
                                                 <Text style={styles.exerciseText}>X Kcal</Text>
                                                 <Text style={styles.exerciseText}>{exercise.series[exercise.series.length-1].weight} Kg.</Text>
@@ -83,7 +98,8 @@ export default function TodaySession()
                                                     style={styles.playIconButton}
                                                     color='#FFF'
                                                 />
-                                            }/>
+                                            }
+                                            onPress={() => setSelectedExercise(exercise)}/>
                                     </View>
                                 </View>
                             </LinearGradient>
@@ -91,50 +107,23 @@ export default function TodaySession()
                     </View>
                 )}
             </ScrollView>
+            {selectedExercise &&
+                <View>
+                    <ExerciseInProgress selectedExercise={selectedExercise} onExerciseDone={onExerciseDone} onExit={() => setSelectedExercise(null)} navigation={navigation}/>
+                </View>
+            }
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    titles: {
-        fontSize: 30,
-        fontWeight: "bold",
-        alignSelf: 'center',
-        color: '#fff',
-        marginTop: 10,
-        marginLeft:10,
-        marginBottom: -40
-    },
-    cardContainer: {
-        borderRadius: 10,
-        borderWidth: 0,
-        backgroundColor: '#242538'
-    },
-    image: {
-        borderRadius: 10,
-        height: 210,
-        resizeMode: 'stretch',
+    mainTitle: {
+        color: '#FFF', 
         alignSelf: 'center'
     },
-    header: {
-        color: "#40d876",
-        fontSize: 22,
-        paddingLeft: 20
-    },
-    actionButtonContainer: {
-        justifyContent: 'space-between',
-        height: 85,
-        width: 150,
-        alignSelf: 'center',
-        marginTop: 10
-    },
-    actionButton: {
-        backgroundColor: '#40d876'
-    },
-    textButton: {
-        color: '#131429',
-        fontSize: 18,
-        fontWeight: '400'
+    exerciseTitleContainer: {
+        flexDirection: 'row', 
+        alignItems: 'center'
     },
     routineCard: {
         borderRadius: 20,
@@ -142,33 +131,6 @@ const styles = StyleSheet.create({
         height: 180,
         margin: 10,
         overflow: 'hidden'
-    },
-    routineScrollView: {
-        margin: 20
-    },
-    routineDescContainer: {
-        borderRadius: 10,
-        backgroundColor: 'rgba(19, 20, 41, 0.6)',
-        height: 60,
-        width: 80,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 20,
-        marginLeft: 5
-    },
-    routineLevelIconContainer: {
-        backgroundColor: '#131429',
-        height: 30,
-        width: 50,
-        borderRadius: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 5
-    },
-    valueRoutineLevel: {
-        color: 'orange',
-        fontSize: 11,
-        fontWeight: 'bold'
     },
     exerciseDataContainer: {
         alignSelf: 'flex-end',
@@ -201,6 +163,11 @@ const styles = StyleSheet.create({
     playIconButton: {
         marginLeft: 5
     },
+    cardContentContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between',
+        width: 80
+    },
     exerciseInfoContainer: {
       flexDirection: 'row',
       justifyContent: 'space-around',
@@ -214,7 +181,7 @@ const styles = StyleSheet.create({
         marginTop: 5, 
         alignItems: 'center'
     },
-    cardInfoContainer: {
+    cardItemsContainer: {
         height: 80, 
         justifyContent: 'space-between',
         alignItems: 'center',
