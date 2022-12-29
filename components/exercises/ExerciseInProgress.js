@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Button, Text } from "react-native-elements";
-import {StyleSheet, View, SafeAreaView} from "react-native";
+import {StyleSheet, View, SafeAreaView, TouchableOpacity} from "react-native";
 import { Title } from "react-native-paper";
-import CustomCardBackground from "../common/CustomCardBackground";
 import darkStyles from "../common/DarkStyles.js";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 import CustomMenu from "../common/CustomMenu";
-import ExerciseInfoCircle from "../ExerciseInfoCircle";
 import {readableTime} from "../common/helpers/Utils";
 import EditExerciseSerie from "../EditExerciseSerie";
+import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import {BackgroundImage} from "react-native-elements/dist/config";
+import SquareIconInfo from "../SquareIconInfo";
 
 export default function ExerciseInProgress(props)
 {
@@ -51,21 +52,23 @@ export default function ExerciseInProgress(props)
             <View style={styles.titleContainer}>
                 <Title style={styles.title}>{props.selectedExercise.name}</Title>
             </View>
-            <View style={styles.cardContainer}>
-                <CustomCardBackground 
-                    uriImage={props.selectedExercise.image} 
-                    backgroundImageStyle={{borderRadius: 0}} 
-                    start={{x : 0.5, y: 1}} 
-                    end={{x:0.5, y: 0}} 
-                    style={styles.cardBackground} 
-                    gradientColors={['rgba(0,0,0,0.8)', 'rgba(19, 20, 41, 0)', 'rgba(19, 20, 41, 0.8)']} 
-                    gradientLocations={[0, 0.5, 1]}/>
-            </View>
-            <View style={styles.exerciseCirclesContainer}>
-                <ExerciseInfoCircle icon="clock" desc="Repetitions" value={series[serie].reps}/>
-                <ExerciseInfoCircle icon="dumbbell" desc="Weight (kg)" value={series[serie].weight}/>
-                <ExerciseInfoCircle icon="fire" desc="Fail" value={series[serie].fail ? 'Yes' : 'No'}/>
-                <ExerciseInfoCircle icon="clock" desc="Rest (sec)" value={series[serie].rest ?? 60}/>
+            <BackgroundImage source={{uri: props.selectedExercise.image}} style={styles.exerciseCard} resizeMode='cover'>
+                <TouchableOpacity onPress={()=> alert('Display details')}>
+                    <View style={styles.infoButtonContainer}>
+                        <FontAwesome
+                            name="info-circle"
+                            solid
+                            size={20}
+                            color='#E68D33'
+                        />
+                    </View>
+                </TouchableOpacity>
+            </BackgroundImage>
+            <View style={styles.startCardsContainer}>
+                <SquareIconInfo title='Repetitions' iconName='clock' iconSize={30} value={series[serie].reps}/>
+                <SquareIconInfo title='Weight (kg)' iconName='dumbbell' iconSize={30} value={series[serie].weight}/>
+                <SquareIconInfo title='Fail' iconName='fire' iconSize={30} value={series[serie].fail ? 'Yes' : 'No'}/>
+                <SquareIconInfo title='Rest (sec)' iconName='clock' iconSize={30} value={series[serie].rest ?? 60}/>
             </View>
             <View style={styles.actionsContainer}>
                 <View style={styles.serieCountContainer}>
@@ -84,17 +87,17 @@ export default function ExerciseInProgress(props)
                         onPress={() => goBack()}
                     />
                     <View style={styles.restCountDownContainer}>
-                        {
-                            countDownStart ? <CountdownCircleTimer
-                            key={serie}
-                            isPlaying={countDownStart}
-                            duration={series[serie].rest ?? 60}
-                            size={120}
-                            strokeWidth={10}
-                            trailColor='#40d876'
-                            colors={['#a33115']}
-                            colorsTime={[50]}>
-                                {({ remainingTime }) =>
+                        {countDownStart ? 
+                            <CountdownCircleTimer
+                                key={serie}
+                                isPlaying={countDownStart}
+                                duration={series[serie].rest ?? 60}
+                                size={120}
+                                strokeWidth={10}
+                                trailColor='#40d876'
+                                colors={['#a33115']}
+                                colorsTime={[50]}>
+                                {({ remainingTime }) => 
                                     <Text style={styles.countDown}>{readableTime(remainingTime)}</Text>}
                             </CountdownCircleTimer> :
                             <>
@@ -157,5 +160,28 @@ const styles = StyleSheet.create({
     },
     restInfo: {color: '#FFF', fontSize: 34, margin: 10},
     countDown: {color: '#FFF', fontSize: 28},
-    restCountDownContainer: {height:130, width: 130, alignItems: 'center', justifyContent: 'flex-end'}
+    restCountDownContainer: {height:130, width: 130, alignItems: 'center', justifyContent: 'flex-end'},
+    exerciseCard: {
+        borderWidth: 0,
+        width: '100%',
+        height: 280,
+        overflow: 'hidden',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end'
+    },
+    infoButtonContainer: {
+        borderRadius: 10,
+        backgroundColor: 'rgba(19, 20, 41, 0.6)',
+        height: 60,
+        width: 60,
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        margin: 10
+    },
+    startCardsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10
+    }
 });

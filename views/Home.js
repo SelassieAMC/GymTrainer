@@ -10,14 +10,12 @@ import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import {GetCurrentDayNumberAndName} from "../components/common/helpers/Utils";
 import Routines from "../components/common/helpers/Routines";
 import {BackgroundImage} from "react-native-elements/dist/config";
-import CustomMenu from "../components/common/CustomMenu";
-import {Menu, MenuDivider, MenuItem} from "react-native-material-menu";
+import SquareIconInfo from "../components/SquareIconInfo";
 
 export default function Home({ navigation }, props)
 {
     const [dayNumber, dayName] = GetCurrentDayNumberAndName();
     const day = props.dayNumber ? props.dayNumber-1 : dayNumber;
-    const [exercises, setExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === day));
     const [routines, setRoutines] = useState([]);
     
     const getRoutineLevel = (levelNumber) => {
@@ -30,8 +28,7 @@ export default function Home({ navigation }, props)
             default: return 'Unbelievable'
         }
     }
-    let _menu = null;
-    const [isVisible, setIsVisible] = useState(false);
+    
     const fetchData = () => {
         return fetch("https://7aa2-186-113-78-154.ngrok.io/api/v1/routine/get-all?includeExercises=false",
             {
@@ -79,42 +76,9 @@ export default function Home({ navigation }, props)
                         
                         <Title style={styles.sectionTitle}>Weekly Stats</Title>
                         <View style={styles.startCardsContainer}>
-                            <View style={styles.cardContainer}>
-                                <View style={styles.statIconContainer}>
-                                    <FontAwesome
-                                        name="fire"
-                                        solid
-                                        size={22}
-                                        color='#E68D33'
-                                    />
-                                </View>
-                                <Text style={styles.valueStat}>2.153</Text>
-                                <Text style={styles.descStat}>kcal. burnt</Text>
-                            </View>
-                            <View style={styles.cardContainer}>
-                                <View style={styles.statIconContainer}>
-                                    <FontAwesome
-                                        name="clock"
-                                        solid
-                                        size={22}
-                                        color='#E68D33'
-                                    />
-                                </View>
-                                <Text style={styles.valueStat}>15H 39MIN</Text>
-                                <Text style={styles.descStat}>total time</Text>
-                            </View>
-                            <View style={styles.cardContainer}>
-                                <View style={styles.statIconContainer}>
-                                    <FontAwesome
-                                        name="dumbbell"
-                                        solid
-                                        size={22}
-                                        color='#E68D33'
-                                    />
-                                </View>
-                                <Text style={styles.valueStat}>67</Text>
-                                <Text style={styles.descStat}>Exercise</Text>
-                            </View>
+                            <SquareIconInfo iconName='fire' iconSize={22} title='kcal. burnt' value={2.153} valueStyle={styles.valueStat} descStyle={styles.descStat}/>
+                            <SquareIconInfo iconName='clock' iconSize={22} title='total time' value='15H 39MIN' valueStyle={styles.valueStat} descStyle={styles.descStat}/>
+                            <SquareIconInfo iconName='dumbbell' iconSize={22} title='Exercise' value={67} valueStyle={styles.valueStat} descStyle={styles.descStat}/>
                         </View>
                     </LinearGradient>
                 </ImageBackground>
@@ -251,30 +215,11 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginTop: 10
     },
-    cardContainer: {
-        borderRadius: 10,
-        backgroundColor: '#242538',
-        height: 100,
-        width: 100,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    statIconContainer: {
-        backgroundColor: '#131429',
-        height: 40,
-        width: 40,
-        borderRadius: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 5
-    },
     valueStat: {
-        color: '#40d876',
-        fontWeight: "bold"
+        fontSize: 18
     },
     descStat: {
-        color: '#9b9b9b',
-        fontSize: 12
+        fontSize: 14
     },
     bodyContainer: {
       marginLeft: 10,
