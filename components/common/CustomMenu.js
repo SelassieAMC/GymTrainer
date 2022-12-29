@@ -1,29 +1,33 @@
 import React from 'react';
-import {Button, Divider, Menu, Provider} from "react-native-paper";
-import {View} from "react-native";
+import { View, StyleSheet, Text } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-menu";
 
-
-export default function CustomMenu()
+export default function CustomMenu(props)
 {
-    const [visible, setVisible] = React.useState(false);
-
-    const openMenu = () => setVisible(true);
-
-    const closeMenu = () => setVisible(false);
-
     return (
-        <Provider>
-            <View style={{marginRight: 200}}>
-                <Menu
-                    visible={visible}
-                    onDismiss={closeMenu}
-                    anchor={<Button onPress={openMenu} style={{color:'#FFF'}}>Show menu</Button>}>
-                    <Menu.Item onPress={() => {}} title="Item 1" />
-                    <Menu.Item onPress={() => {}} title="Item 2" />
-                    <Divider />
-                    <Menu.Item onPress={() => {}} title="Item 3" />
-                </Menu>
-            </View>
-        </Provider>
+        <View style={styles.container}>
+            <Menu>
+                <MenuTrigger>
+                    <FontAwesome
+                        name="ellipsis-v"
+                        solid
+                        size={25}
+                        color='#40d876'
+                    />
+                </MenuTrigger>
+                <MenuOptions optionsContainerStyle={[styles.menuOptions, props.menuOptionsStyle]}>
+                    {props.options.map((item, index) => {
+                        return <MenuOption key={index} onSelect={() => item.actionHandler()} text={item.title} customStyles={{optionText:[styles.optionText, props.textOptionsStyle]}}/>
+                    })}
+                </MenuOptions>
+            </Menu>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {alignItems: 'center', alignSelf: 'center', marginLeft: 5},
+    menuOptions: {width: 120, backgroundColor: '#242538', borderBottomLeftRadius: 15, padding: 5},
+    optionText: {color: '#40d876', fontSize: 18}
+});

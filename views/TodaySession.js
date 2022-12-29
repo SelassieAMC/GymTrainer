@@ -8,12 +8,13 @@ import { Title } from "react-native-paper";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import { BackgroundImage } from "react-native-elements/dist/config";
 import LinearGradient from "react-native-linear-gradient";
-import ExerciseInProgress from "../components/exercises/ExerciseInProgress2";
+import ExerciseInProgress from "../components/exercises/ExerciseInProgress";
+import CustomMenu from "../components/common/CustomMenu";
 
 
 export default function TodaySession({navigation})
 {
-    const [dayNumber, dayName] = GetCurrentDayNumberAndName(); //add start exercise with a new view, check how to go back from a route to the stack navigator
+    const [dayNumber, dayName] = GetCurrentDayNumberAndName();
     const day = dayNumber;
     const [exercises, setExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === day));
     const [selectedExercise, setSelectedExercise] = useState(null);
@@ -30,6 +31,23 @@ export default function TodaySession({navigation})
 
         setExercises(cloneData);
         setSelectedExercise(null);
+    }
+
+    const routineOptions = () => {
+        return [
+            {
+                title: 'Skip',
+                actionHandler: () => alert('Exercise skipped!')
+            },
+            {
+                title: 'Mark as completed',
+                actionHandler: () => alert('Exercise completed!')
+            },
+            {
+                title: 'Replace',
+                actionHandler: () => alert('Open menu for replace')
+            }
+        ]
     }
     
     return(
@@ -48,16 +66,7 @@ export default function TodaySession({navigation})
                                 <View style={styles.exerciseDataContainer}>
                                     <View style={styles.exerciseTitleContainer}>
                                         <Text style={styles.exerciseTitle}>{exercise.name}</Text>
-                                        <Button
-                                            type="clear"
-                                            icon={
-                                                <FontAwesome
-                                                    name="ellipsis-v"
-                                                    solid
-                                                    size={20}
-                                                    color='#40d876'
-                                                />
-                                            }/>
+                                        <CustomMenu options={routineOptions()} menuOptionsStyle={{width: 200}} textOptionsStyle={{writingDirection: 'rtl'}}/>
                                     </View>
                                     <View style={styles.exerciseInfoContainer}>
                                         <View style={styles.cardContentContainer}>
@@ -81,10 +90,10 @@ export default function TodaySession({navigation})
                                                         color='#E68D33'
                                                     />
                                             </View>
-                                            <View style={[styles.cardItemsContainer, { alignItems: 'flex-start' }]}>
+                                            <View style={[styles.cardItemsContainer, { alignItems: 'flex-start'}]}>
                                                 <Text style={styles.exerciseText}>{exercise.series.length} series</Text>
                                                 <Text style={styles.exerciseText}>X Kcal</Text>
-                                                <Text style={styles.exerciseText}>{exercise.series[exercise.series.length-1].weight} Kg.</Text>
+                                                <Text style={styles.exerciseText}>{exercise.series[exercise.series.length-1].weight} Kg. (Max)</Text>
                                             </View>
                                         </View>
                                         <Button
@@ -182,9 +191,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     cardItemsContainer: {
-        height: 80, 
+        height: 90, 
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 10,
+        marginLeft: 2
     }
 });

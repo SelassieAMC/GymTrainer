@@ -10,6 +10,8 @@ import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import {GetCurrentDayNumberAndName} from "../components/common/helpers/Utils";
 import Routines from "../components/common/helpers/Routines";
 import {BackgroundImage} from "react-native-elements/dist/config";
+import CustomMenu from "../components/common/CustomMenu";
+import {Menu, MenuDivider, MenuItem} from "react-native-material-menu";
 
 export default function Home({ navigation }, props)
 {
@@ -28,9 +30,10 @@ export default function Home({ navigation }, props)
             default: return 'Unbelievable'
         }
     }
-    
+    let _menu = null;
+    const [isVisible, setIsVisible] = useState(false);
     const fetchData = () => {
-        return fetch("https://a6bb-191-109-174-5.ngrok.io/api/v1/routine/get-all?includeExercises=false",
+        return fetch("https://7aa2-186-113-78-154.ngrok.io/api/v1/routine/get-all?includeExercises=false",
             {
                 method: 'GET',
                 headers: {
@@ -141,9 +144,49 @@ export default function Home({ navigation }, props)
                     </View>
                     <View>
                         <Title style={styles.bodySectionTitle}>Main gym news</Title>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                            {routines.map(routine =>
+                                <View style={{flexWrap: 'wrap', width: 220}} key={routine.id}>
+                                    <BackgroundImage source={{uri: routine.presentationImage}} style={styles.routineCard} resizeMode='cover'>
+                                        <View style={styles.routineDescContainer}>
+                                            <View style={styles.routineLevelIconContainer}>
+                                                <FontAwesome
+                                                    name="dumbbell"
+                                                    solid
+                                                    size={20}
+                                                    color='#40d876'
+                                                />
+                                            </View>
+                                            <Text style={styles.valueRoutineLevel}>{getRoutineLevel(routine.routineLevel)}</Text>
+                                        </View>
+                                    </BackgroundImage>
+                                    <Text style={{color: '#FFF', textAlign: 'center', fontWeight: 'bold', width: '100%'}}>{routine.name}</Text>
+                                </View>
+                            )}
+                        </ScrollView>
                     </View>
                     <View>
                         <Title style={styles.bodySectionTitle}>Training tips</Title>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                            {routines.map(routine =>
+                                <View style={{flexWrap: 'wrap', width: 220}} key={routine.id}>
+                                    <BackgroundImage source={{uri: routine.presentationImage}} style={styles.routineCard} resizeMode='cover'>
+                                        <View style={styles.routineDescContainer}>
+                                            <View style={styles.routineLevelIconContainer}>
+                                                <FontAwesome
+                                                    name="dumbbell"
+                                                    solid
+                                                    size={20}
+                                                    color='#40d876'
+                                                />
+                                            </View>
+                                            <Text style={styles.valueRoutineLevel}>{getRoutineLevel(routine.routineLevel)}</Text>
+                                        </View>
+                                    </BackgroundImage>
+                                    <Text style={{color: '#FFF', textAlign: 'center', fontWeight: 'bold', width: '100%'}}>{routine.name}</Text>
+                                </View>
+                            )}
+                        </ScrollView>
                     </View>
                 </View>
             </ScrollView>
@@ -245,7 +288,8 @@ const styles = StyleSheet.create({
     bodySectionTitle:{
         color: '#FFF',
         paddingLeft: 10,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginTop: 20
     },
     routineCard: {
         borderRadius: 20,

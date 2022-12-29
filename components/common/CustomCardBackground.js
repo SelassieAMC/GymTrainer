@@ -12,8 +12,8 @@ export default function CustomCardBackground(props){
                     <LinearGradient
                         colors={props.gradientColors}
                         style={{height : '100%', width : '100%'}}
-                        start={{ x: 0, y: 1 }}
-                        end={{ x: 1, y: 1 }}
+                        start={props.start ?? { x: 0, y: 1 }}
+                        end={ props.end ?? { x: 1, y: 1 }}
                         locations={props.gradientLocations}>
                         <View style={[styles.cover, props.coverStyle]}>
                             <Title style={[styles.title, props.titleStyle]}>{props.title}</Title>

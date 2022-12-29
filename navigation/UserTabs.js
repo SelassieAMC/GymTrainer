@@ -3,8 +3,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import DarkStyles from '../components/common/DarkStyles';
 import TodaySessionStack from "./TodaySessionStack";
 import HomeStack from "./HomeStack";
-import Exercises from "../components/exercises/Exercises";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import Exercises from "../views/Exercises";
 
 const Tab = createBottomTabNavigator();
 

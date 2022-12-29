@@ -20,14 +20,14 @@ const darkStyles = StyleSheet.create({
         paddingTop: 80
     },
     bigTitle: {
-        color: "#FDB10E",
+        color: "#a33115",
         fontSize: 28,
         paddingLeft: 20,
         alignSelf: 'center',
         marginBottom: 30
     },
     bigTitleWithSafeAre: {
-        color: "#FDB10E",
+        color: "#a33115",
         fontSize: 28,
         paddingLeft: 20,
         alignSelf: 'center',
@@ -36,6 +36,7 @@ const darkStyles = StyleSheet.create({
     button: {
         borderColor: '#40d876'
     }
+    //#004368
 });
 
 module.exports = darkStyles;

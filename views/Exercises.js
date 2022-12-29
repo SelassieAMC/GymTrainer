@@ -3,11 +3,11 @@ import { StyleSheet, View, FlatList, Text, Modal, Alert, SafeAreaView } from "re
 import { Button } from "react-native-elements";
 import { Title } from "react-native-paper";
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
-import Dropdown from "../common/Dropdown";
-import ExerciseCard from "./ExerciseCard";
-import { GetCurrentDayNumberAndName } from "../common/helpers/Utils";
-import Routines from "../common/helpers/Routines";
-import darkStyles from '../common/DarkStyles';
+import {GetCurrentDayNumberAndName} from "../components/common/helpers/Utils";
+import Routines from "../components/common/helpers/Routines";
+import ExerciseCard from "../components/exercises/ExerciseCard";
+import darkStyles from '../components/common/DarkStyles';
+import CustomDropdown  from "../components/common/Dropdown";
 
 export default function Exercises()
 {
@@ -18,7 +18,7 @@ export default function Exercises()
     const [exercisesData, setExercisesData] = useState([]);
 
     const fetchData = () => {
-        return fetch("https://a6bb-191-109-174-5.ngrok.io/api/v1/exercises/get-all",
+        return fetch("https://7aa2-186-113-78-154.ngrok.io/api/v1/exercises/get-all",
             {
                 method: 'GET',
                 headers: {
@@ -123,7 +123,7 @@ export default function Exercises()
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalText}>Modal to add routine to the day or week</Text>
-                        <Dropdown data={addRoutineOptions} iconName="calendar-times" onSelectedValue={(value, resetter) => handleAddRoutineAction(value, resetter) }/>
+                        <CustomDropdown data={addRoutineOptions} iconName="calendar-times" onSelectedValue={(value, resetter) => handleAddRoutineAction(value, resetter) }/>
                         <View style={{flexDirection: "row", width: 200, alignSelf: 'center', justifyContent: 'space-between', marginTop: 20}}>
                             <Button 
                                 icon={
