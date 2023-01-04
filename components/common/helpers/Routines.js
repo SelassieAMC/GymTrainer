@@ -274,7 +274,7 @@ export default {
                     id: 1,
                     day : 2,
                     name : 'Prensa una pierna - dia 2',
-                    image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
+                    image : 'https://i.ytimg.com/vi/xT5-HS6e9O4/maxresdefault.jpg',
                     presentationImage: 'https://www.cambiatufisico.com/wp-content/uploads/prensa-piernas.jpg',
                     muscle : 'Cuadricep, femoral, gluteo',
                     series: [
@@ -304,7 +304,7 @@ export default {
                     id : 2,
                     day : 2,
                     name : 'Peso muerto - dia 2',
-                    image : 'https://www.cambiatufisico.com/wp-content/uploads/peso-muerto2.jpg',
+                    image : 'https://tumejorfisico.com/wp-content/uploads/2020/10/peso-muerto.jpg',
                     presentationImage: 'https://i.blogs.es/d61882/istock-891602094/1366_2000.jpg',
                     muscle : 'Femoral',
                     series: [
@@ -334,7 +334,7 @@ export default {
                     id : 3,
                     day : 2,
                     name : 'Aductores en polea - dia 2',
-                    image : 'https://www.cambiatufisico.com/wp-content/uploads/aductores-polea.jpg',
+                    image : 'https://www.musculaciontotal.com/wp-content/uploads/2018/08/abduccion-de-piernas-en-polea-baja.jpg',
                     presentationImage: 'https://www.nexofin.com/archivos/2017/10/abduccion-con-polea-1.jpg',
                     muscle : 'aductores',
                     series: [
@@ -364,7 +364,7 @@ export default {
                     id : 4,
                     day : 2,
                     name : 'Extension cuadriceps en maquina - dia 2',
-                    image : 'https://www.cambiatufisico.com/wp-content/uploads/Extensiones-en-maquina.jpg',
+                    image : 'https://www.masmusculo.com/blog/wp-content/uploads/2018/07/extension-de-cuadriceps.jpg',
                     presentationImage: 'https://physiotutors.com/wp-content/uploads/2022/01/Seated-Leg-Extension.png',
                     muscle : 'cuadricep',
                     series: [
@@ -407,7 +407,7 @@ export default {
                     id: 1,
                     day : 3,
                     name : 'Prensa una pierna - dia 3',
-                    image : 'https://www.cambiatufisico.com/wp-content/uploads/Prensa-Inclinada-a-una-pierna.jpg',
+                    image : 'https://i.ytimg.com/vi/xT5-HS6e9O4/maxresdefault.jpg',
                     presentationImage: 'https://www.cambiatufisico.com/wp-content/uploads/prensa-piernas.jpg',
                     muscle : 'Cuadricep, femoral, gluteo',
                     series: [
@@ -437,7 +437,7 @@ export default {
                     id : 2,
                     day : 3,
                     name : 'Peso muerto - dia 3',
-                    image : 'https://www.cambiatufisico.com/wp-content/uploads/peso-muerto2.jpg',
+                    image : 'https://w7.pngwing.com/pngs/976/621/png-transparent-deadlift-dumbbell-exercise-fitness-centre-barbell-dumbbell-physical-fitness-hand-human-thumbnail.png',
                     presentationImage: 'https://i.blogs.es/d61882/istock-891602094/1366_2000.jpg',
                     muscle : 'Femoral',
                     series: [

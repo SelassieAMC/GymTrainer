@@ -7,18 +7,25 @@ import {GetCurrentDayNumberAndName} from "../components/common/helpers/Utils";
 import Routines from "../components/common/helpers/Routines";
 import ExerciseCard from "../components/exercises/ExerciseCard";
 import darkStyles from '../components/common/DarkStyles';
-import CustomDropdown  from "../components/common/Dropdown";
+import CustomDropdown  from "../components/common/CustomDropdown";
 
-export default function Exercises()
+export default function Exercises(props)
 {
     const dayInfo = GetCurrentDayNumberAndName();
     const [modalVisible, setModalVisible] = useState(false);
     const [todayExercises, setTodayExercises] = useState(Routines.getRoutines().exercises.filter(x => x.day === dayInfo[0]));
     const [selectedExercise, setSelectedExercise] = useState(null);
     const [exercisesData, setExercisesData] = useState([]);
+    const [filteredExercises, setFilteredExercises] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [muscles, setMuscles] = useState([]);
+    const [categoryFilter, setCategoryFilter] = useState(null);
+    const [muscleFilter, setMuscleFilter] = useState(null);
+    const [categoryFilterValueSetter, setCategoryFilterValueSetter] = useState(null);
+    const [muscleFilterValueSetter, setMuscleFilterValueSetter] = useState(null);
 
     const fetchData = () => {
-        return fetch("https://7aa2-186-113-78-154.ngrok.io/api/v1/exercises/get-all",
+        return fetch("https://777a-186-113-78-154.ngrok.io/api/v1/exercises/get-all",
             {
                 method: 'GET',
                 headers: {
@@ -26,12 +33,53 @@ export default function Exercises()
                 }
             })
             .then(res => res.json())
-            .then(data => setExercisesData(data))
+            .then(data => {
+                setExercisesData(data);
+                setFilteredExercises(data);
+            })
+            .catch(error => console.log(error));
+    };
+
+    const fetchCategories = () => {
+        return fetch("https://777a-186-113-78-154.ngrok.io/api/v1/Categories/get-all",
+            {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                const categoriesData = data.map((category) => {
+                        return { label: category.name, value: category.id }
+                    });
+                setCategories(categoriesData);
+            })
+            .catch(error => console.log(error));
+    };
+
+    const fetchMuscles = () => {
+        return fetch("https://777a-186-113-78-154.ngrok.io/api/v1/Muscles/get-all",
+            {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                const musclesData = data.map((muscle) => {
+                    return { label: muscle.name, value: muscle.id }
+                });
+                setMuscles(musclesData);
+            })
             .catch(error => console.log(error));
     };
 
     useEffect(() => {
         fetchData();
+        fetchCategories();
+        fetchMuscles();
     }, []);
 
     const addRoutineOptions = [
@@ -39,6 +87,53 @@ export default function Exercises()
         { label: dayInfo[1] + '`s routine', value: 2 },
         { label: 'Specific days', value: 3 }
     ];
+    
+    const handleCategoryFilterChange = (value, setter) =>
+    {
+        setCategoryFilterValueSetter(setter);
+        setCategoryFilter(value);
+        let dataQueried;
+        if (value) {
+            dataQueried = exercisesData.filter(exercise => exercise.categories.some(cat => cat.id === Number(value)));
+        }
+
+        if (muscleFilter) {
+            dataQueried = dataQueried.filter(exercise => exercise.musclesWorked.some(mw => mw.id === Number(muscleFilter)));
+        }
+        
+        setFilteredExercises(dataQueried);
+    }
+
+    const handleMuscleFilterChange = (value, setter) =>
+    {
+        setMuscleFilterValueSetter(setter);
+        setMuscleFilter(value);
+        let dataQueried;
+        if (value) {
+            dataQueried = exercisesData.filter(exercise => exercise.musclesWorked.some(mw => mw.id === Number(value)));
+        }
+
+        if (categoryFilter) {
+            dataQueried = dataQueried.filter(exercise => exercise.categories.some(cat => cat.id === Number(categoryFilter)));
+        }
+
+        setFilteredExercises(dataQueried);
+    }
+    
+    const handleClearFilters = () => {
+        setCategoryFilter(null);
+        setMuscleFilter(null);
+        
+        if(categoryFilterValueSetter)
+        {
+            categoryFilterValueSetter(null);
+        }
+        if(muscleFilterValueSetter) 
+        {
+            muscleFilterValueSetter(null);
+        }
+        fetchData();
+    }
 
     const handleActionButton = (exerciseItem) => {
         setModalVisible(true);
@@ -47,39 +142,61 @@ export default function Exercises()
 
     const actionButtons = (exerciseItem) => (
         <View style={styles.actionButtonsContainer}>
-            <Button 
-                icon={
-                    <FontAwesome
-                        name="calendar-plus"
-                        solid
-                        size={19}
-                        style={{marginRight:5}}
-                        color='green'
-                    />
-                }
-                title='Add to your routine'
-                type="outline"
-                containerStyle={styles.actionButtonContainer}
-                buttonStyle={darkStyles.button}
-                titleStyle={styles.textButton}
-                onPress={() => handleActionButton(exerciseItem)}
-            />
-            <Button
-                icon={
-                    <FontAwesome
-                        name="search"
-                        solid
-                        size={19}
-                        style={{marginRight:5}}
-                        color='green'
-                    />
-                }
-                title='Find similars'
-                type="outline"
-                containerStyle={styles.actionButtonContainer}
-                buttonStyle={darkStyles.button}
-                titleStyle={styles.textButton}
-            />
+            {!props.routineCreatorMode ?
+            <>
+                <Button
+                    icon={
+                        <FontAwesome
+                            name="calendar-plus"
+                            solid
+                            size={19}
+                            style={{marginRight:5}}
+                            color='green'
+                        />
+                    }
+                    title='Add to your routine'
+                    type="outline"
+                    containerStyle={styles.actionButtonContainer}
+                    buttonStyle={darkStyles.button}
+                    titleStyle={styles.textButton}
+                    onPress={() => handleActionButton(exerciseItem)}
+                />
+                <Button
+                    icon={
+                        <FontAwesome
+                            name="search"
+                            solid
+                            size={19}
+                            style={{marginRight:5}}
+                            color='green'
+                        />
+                    }
+                    title='Find similars'
+                    type="outline"
+                    containerStyle={styles.actionButtonContainer}
+                    buttonStyle={darkStyles.button}
+                    titleStyle={styles.textButton}
+                />
+            </> :
+            <>
+                <Button
+                    icon={
+                        <FontAwesome
+                            name="plus"
+                            solid
+                            size={19}
+                            style={{marginRight:5}}
+                            color='green'
+                        />
+                    }
+                    title='Select'
+                    type="outline"
+                    containerStyle={styles.actionButtonRoutineContainer}
+                    buttonStyle={darkStyles.button}
+                    titleStyle={styles.textButton}
+                    onPress={() => props.handleSelectedExercise(exerciseItem.id)}
+                />
+            </>}
         </View>
     );
 
@@ -159,17 +276,34 @@ export default function Exercises()
                     </View>
                 </View>
             </Modal>
-            <Title style={styles.catalogTitle}>Exercises Catalog</Title>
-            <Text>Filters</Text>
-            <View flexDirection='row' justifyContent='space-around'>
-                <Text style={styles.textButton}>Body part</Text>
-                <Text style={styles.textButton}>Muscle</Text>
-                <Text style={styles.textButton}>Type</Text>
-                <Text style={styles.textButton}>Not done</Text>
+            { !props.routineCreatorMode && <Title style={styles.catalogTitle}>Exercises Catalog</Title>}
+            <View style={{margin: 10, flexDirection:'row', justifyContent:'space-between'}}>
+                {categories.length > 0 && 
+                    <CustomDropdown
+                        data={categories}
+                        dropdownStyle={{height: 40, width: 150}}
+                        placeholderStyle={{fontSize: 16}}
+                        placeholder='Category'
+                        selectedTextStyle={{color: '#FFF'}}
+                        defaultValue={categoryFilter}
+                        onSelectedValue={(value, setter) => handleCategoryFilterChange(value, setter)}/>
+                }
+                {muscles.length > 0 &&
+                    <CustomDropdown
+                        data={muscles}
+                        dropdownStyle={{height: 40, width: 150}}
+                        placeholderStyle={{fontSize: 16}}
+                        placeholder='Muscle'
+                        defaultValue={muscleFilter}
+                        selectedTextStyle={{color: '#FFF'}}
+                        onSelectedValue={(value, setter) =>  handleMuscleFilterChange(value, setter)}/>
+                }
+                <Button type='clear' title='clear' disabled={!muscleFilter && !categoryFilter} onPress={() => handleClearFilters()}/>   
             </View>
-            {exercisesData && <FlatList
-                data={exercisesData}
+            {filteredExercises && <FlatList
+                data={filteredExercises}
                 renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
                 keyExtractor={item  =>  item.id}
             />}
         </SafeAreaView>
@@ -207,7 +341,15 @@ const styles = StyleSheet.create({
     actionButtonContainer: {
         marginTop: 10,
         backgroundColor: '#40d876',
-        maxWidth: 160
+        maxWidth: 160,
+        borderRadius: 15
+    },
+    actionButtonRoutineContainer: {
+        marginTop: 10,
+        backgroundColor: '#40d876',
+        width: 280,
+        borderRadius: 15,
+        alignItems: 'center'
     },
     textButton: {
         color: '#131429',
@@ -218,5 +360,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between', 
         margin: 10,
         flexDirection: 'row'
+    },
+    filterText: {
+        color: '#FFF'
     }
   });

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {StyleSheet, Text, TextInput, View} from "react-native";
 import CustomModal from "./CustomModal";
-import CustomDropdown from "./common/Dropdown";
+import CustomDropdown from "./common/CustomDropdown";
 import {Button} from "react-native-elements";
 
 export default function EditExerciseSerie(props)

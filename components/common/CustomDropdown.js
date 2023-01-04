@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
 import {StyleSheet, View} from "react-native";
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
@@ -51,6 +51,7 @@ export default function CustomDropdown(props)
                     labelField="label"
                     valueField="value"
                     searchPlaceholder="Search..."
+                    placeholder={props.placeholder ?? 'Select item'}
                     value={value}
                     onChange={item => {
                         handleOnChange(item.value);
@@ -72,7 +73,7 @@ export default function CustomDropdown(props)
 const styles = StyleSheet.create({
     dropdown: {
         height: 50,
-        width: 200,
+        width: 180,
         borderColor: '#2089Dc',
         borderWidth: 0.5,
         borderRadius: 8,
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
         color: '#FDB10E'
     },
     placeholderStyle: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#FFF'
     },
     selectedTextStyle: {

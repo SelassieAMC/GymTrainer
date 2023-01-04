@@ -5,6 +5,7 @@ import TodaySessionStack from "./TodaySessionStack";
 import HomeStack from "./HomeStack";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Exercises from "../views/Exercises";
+import YourRoutine from "../views/YourRoutine";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,14 @@ export default function UserTabs()
             <Tab.Screen
                 name='Today'
                 component={TodaySessionStack}
+                options={{
+                    tabBarStyle: DarkStyles.darkTabStyle,
+                    headerShown: false,
+                    tabBarIcon: () => (<FontAwesome name="calendar-day" color={'#E68D33'} size={30} solid/>)
+                }}/>
+            <Tab.Screen
+                name='Routine'
+                component={YourRoutine}
                 options={{
                     tabBarStyle: DarkStyles.darkTabStyle,
                     headerShown: false,

@@ -65,10 +65,10 @@ export default function ExerciseInProgress(props)
                 </TouchableOpacity>
             </BackgroundImage>
             <View style={styles.startCardsContainer}>
-                <SquareIconInfo title='Repetitions' iconName='clock' iconSize={30} value={series[serie].reps}/>
-                <SquareIconInfo title='Weight (kg)' iconName='dumbbell' iconSize={30} value={series[serie].weight}/>
-                <SquareIconInfo title='Fail' iconName='fire' iconSize={30} value={series[serie].fail ? 'Yes' : 'No'}/>
-                <SquareIconInfo title='Rest (sec)' iconName='clock' iconSize={30} value={series[serie].rest ?? 60}/>
+                <SquareIconInfo title='Repetitions' iconName='clock' iconSize={30} value={series[serie].reps} style={styles.squareInfo} valueStyle={styles.valueStyle} descStyle={styles.descStyle}/>
+                <SquareIconInfo title='Weight (kg)' iconName='dumbbell' iconSize={30} value={series[serie].weight} style={styles.squareInfo} valueStyle={styles.valueStyle} descStyle={styles.descStyle}/>
+                <SquareIconInfo title='Fail' iconName='fire' iconSize={30} value={series[serie].fail ? 'Yes' : 'No'} style={styles.squareInfo} valueStyle={styles.valueStyle} descStyle={styles.descStyle}/>
+                <SquareIconInfo title='Rest (sec)' iconName='clock' iconSize={30} value={series[serie].rest ?? 60} style={styles.squareInfo} valueStyle={styles.valueStyle} descStyle={styles.descStyle}/>
             </View>
             <View style={styles.actionsContainer}>
                 <View style={styles.serieCountContainer}>
@@ -183,5 +183,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 10
+    },
+    squareInfo: {
+        height: 90,
+        width: 90
+    },
+    valueStyle: {
+        fontSize: 22
+    },
+    descStyle: {
+        fontSize: 14
     }
 });

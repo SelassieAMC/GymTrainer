@@ -30,7 +30,7 @@ export default function Home({ navigation }, props)
     }
     
     const fetchData = () => {
-        return fetch("https://7aa2-186-113-78-154.ngrok.io/api/v1/routine/get-all?includeExercises=false",
+        return fetch("https://777a-186-113-78-154.ngrok.io/api/v1/routine/get-all?includeExercises=false",
             {
                 method: 'GET',
                 headers: {
@@ -47,7 +47,7 @@ export default function Home({ navigation }, props)
     }, []);
 
     return(
-        <View style={[styles.container, darkStyles.backgroundDark]}>
+        <View style={[darkStyles.backgroundDark]}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <ImageBackground source={backgroundImage} style={styles.backgroundImage} resizeMode='cover'>
                     <LinearGradient

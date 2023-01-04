@@ -1,3 +1,5 @@
+import {Dimensions} from "react-native";
+
 export function GetCurrentDayNumberAndName()
 {
     const date = new Date();
@@ -18,4 +20,11 @@ export const readableTime = (time) =>
 
 function str_pad_left(string,pad,length) {
     return (new Array(length+1).join(pad)+string).slice(-length);
+}
+
+export const screenDimensions = () => {
+    const width = Dimensions.get('screen').width;
+    const height = Dimensions.get('screen').height;
+    
+    return [width, height];
 }
