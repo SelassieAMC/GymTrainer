@@ -13,7 +13,7 @@ export default function ExerciseSelector(props)
     const [filteredExercises, setFilteredExercises] = useState([]);
     
     const fetchData = () => {
-        return fetch("https://777a-186-113-78-154.ngrok.io/api/v1/exercises/get-all",
+        return fetch("https://c19b-191-108-26-96.ngrok.io/api/v1/exercises/get-all",
             {
                 method: 'GET',
                 headers: {
@@ -39,22 +39,24 @@ export default function ExerciseSelector(props)
                 <View>
                     <Title style={styles.title}>{item.name}</Title>
                     <Text style={styles.exerciseDataText}>Muscles: </Text>
-                    <View style={styles.musclesContainer}>
-                        {item.musclesWorked.map((muscle, index)=> {
-                            return <View key={index} style={styles.muscleTextContainer}>
-                                <Text style={[styles.exerciseDataText]}>{muscle.name}</Text>
-                            </View>
-                        })}
-                    </View>
+                    {item.musclesWorked.length > 0 && 
+                        <View style={styles.musclesContainer}>
+                            {item.musclesWorked.map((muscle, index)=> {
+                                return <View key={index} style={styles.muscleTextContainer}>
+                                    <Text style={[styles.exerciseDataText]}>{muscle.name}</Text>
+                                </View>
+                            })}
+                        </View>
+                    }
                 </View>
                 <View>
                     <Button 
                         type="clear" 
-                        disabled={props.selectedExercises.filter(x => x === item.id).length > 0} 
+                        disabled={props.selectedExercises?.filter(x => x === item.id).length > 0} 
                         icon={
                             <FontAwesome5 
                                 name='plus-circle' 
-                                color={props.selectedExercises.filter(x => x === item.id).length > 0 ? 'gray' : 'green'} 
+                                color={props.selectedExercises?.filter(x => x === item.id).length > 0 ? 'gray' : 'green'} 
                                 size={30}/>
                         } 
                         onPress={() => props.handleSelectedExercise(item.id)}/>
@@ -64,10 +66,10 @@ export default function ExerciseSelector(props)
     );
     
     return (
-        <View>
-            {props.selectedExercises.length > 0 &&
+        <>
+            {props.selectedExercises?.length > 0 &&
                 <View style={{flexDirection: 'row', marginBottom: 5}}>
-                    {props.selectedExercises.map((value) => {
+                    {exercisesData.length > 0 && props.selectedExercises.map((value) => {
                         const exerciseItem = exercisesData.filter(x => x.id === value)[0];
                         return (
                             <View key={value}>
@@ -94,7 +96,7 @@ export default function ExerciseSelector(props)
                 showsVerticalScrollIndicator={false}
                 keyExtractor={item  =>  item.id}
             />}
-        </View>
+        </>
     )
 }
 
@@ -110,7 +112,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     title: {
-        color: '#FFF'
+        color: '#FFF',
+        width: screenDimensions()[0]*0.6
     },
     exerciseDataText: {
         color: '#FFF'

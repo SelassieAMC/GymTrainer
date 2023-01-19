@@ -13,10 +13,10 @@ export default function EditExerciseSerie(props)
     }, [props.serie]);
     
     const handleSaveAction = () => {
-        let tempSeries = {...props.series}
+        props.visibilityState[1](false);
+        let tempSeries = [...props.series];
         tempSeries[props.serie] = currentSerie;
         props.setSeries(tempSeries);
-        props.visibilityState[1](false);
     }
     
     const handleCancelAction = () => {
@@ -24,7 +24,7 @@ export default function EditExerciseSerie(props)
     }
     
     return (
-        <CustomModal visibilityState={props.visibilityState} title="Edit your current serie">
+        <CustomModal visibilityState={props.visibilityState} title={"Edit serie "+(props.serie+1)+" data"}>
             <View style={{marginTop: 10, marginBottom: 10, alignItems: 'center'}}>
                 <Text>Repetitions</Text>
                 <TextInput

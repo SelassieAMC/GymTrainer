@@ -17,7 +17,7 @@ export default function AddExercise()
     const [selectedMuscles, setSelectedMuscles] = useState([]);
 
     const fetchCategories = () => {
-        return fetch("https://50fd-191-108-26-17.ngrok.io/api/v1/categories",
+        return fetch("https://c19b-191-108-26-96.ngrok.io/api/v1/categories",
             {
                 method: 'GET',
                 headers: {
@@ -30,7 +30,7 @@ export default function AddExercise()
     };
 
     const fetchMuscles = () => {
-        return fetch("https://50fd-191-108-26-17.ngrok.io/api/v1/muscles",
+        return fetch("https://c19b-191-108-26-96.ngrok.io/api/v1/muscles",
             {
                 method: 'GET',
                 headers: {
@@ -48,7 +48,7 @@ export default function AddExercise()
     },[])
     
     const saveExercise = () => {
-        fetch("https://7d45-191-111-30-36.ngrok.io/api/v1/exercises",
+        fetch("https://c19b-191-108-26-96.ngrok.io/api/v1/exercises",
             {
                 method: 'POST',
                 headers: {

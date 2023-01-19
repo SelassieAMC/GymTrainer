@@ -23,7 +23,7 @@ export default function ExerciseCard(props)
             <Card.Image
                 style={styles.image}
                 source={{
-                    uri: item.image
+                    uri: item.presentationImage
                 }}
             />
             <View style={styles.sectionsContainer}>
