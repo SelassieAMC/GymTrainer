@@ -30,7 +30,7 @@ export default function Home({ navigation }, props)
     }
     
     const fetchData = () => {
-        return fetch("https://c19b-191-108-26-96.ngrok.io/api/v1/routine/get-all?includeExercises=false",
+        return fetch("https://77ee-190-69-60-250.ngrok.io/api/v1/routine/get-all?includeExercises=false",
             {
                 method: 'GET',
                 headers: {

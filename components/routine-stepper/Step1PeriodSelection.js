@@ -45,9 +45,6 @@ export default function Step1PeriodSelection(props)
                             onPress={() => handleDaysSelection(index, day.checked)}/>
                 })}
             </View>
-            <View style={{margin: 20, alignItems: 'center'}}>
-                <Button title='Next' type='clear' disabled={!daysSelectionInfo.some(x => x.checked === true)} buttonStyle={{width: 100}} onPress={() => goToStep2()}/>
-            </View>
         </>
     )
 }

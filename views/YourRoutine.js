@@ -11,6 +11,7 @@ import ExerciseSelector from "../components/ExerciseSelector";
 import {screenDimensions} from "../components/common/helpers/Utils";
 import EditExerciseSerie from "../components/EditExerciseSerie";
 import Step1PeriodSelection from "../components/routine-stepper/Step1PeriodSelection";
+import Step2ExerciseSelection from "../components/routine-stepper/Step2ExercisesSelection";
 
 export default function YourRoutine()
 {
@@ -39,7 +40,7 @@ export default function YourRoutine()
     const [currentSerie, setCurrentSerie] = useState(0);
     
     const fetchData = () => {
-        return fetch("https://c19b-191-108-26-96.ngrok.io/api/v1/exercises/get-all",
+        return fetch("https://77ee-190-69-60-250.ngrok.io/api/v1/exercises/get-all",
             {
                 method: 'GET',
                 headers: {
@@ -57,16 +58,6 @@ export default function YourRoutine()
         fetchData();
     }, []);
     
-    const handleSelectedExercise = (exerciseId) => {
-        const exerciseDay = weekdays.indexOf(weekdays.filter(x => x.checked === true)[exercisesSelectedIndex]); //get number day
-        let dayElement = selectedExercises.filter(x => x.day === exerciseDay)[0]; //get current day object
-        const newExercisesList = [...new Set([...dayElement.exercises, exerciseId])]; // set exercises for the current day
-        const newSelectionForDay = {...dayElement, exercises: newExercisesList}; // replace exercises with the new array
-        const newSelection = selectedExercises.map(selectionDay =>
-        { return selectionDay.day === newSelectionForDay.day ? newSelectionForDay : selectionDay}); // replace current day data on general exercise data
-        setSelectedExercises([...newSelection]);
-    }
-    
     const goNextDay = () => {
         setExercisesDay(exercisesSelectedIndex+1);
         const weekDay = weekdays.indexOf(weekdays.filter(x => x.checked === true)[exercisesSelectedIndex+1]);
@@ -74,42 +65,6 @@ export default function YourRoutine()
         {
             setSelectedExercises((selectedExercises) => [...selectedExercises, { day : weekDay, exercises: []}])
         }
-    }
-    
-    const handleRemoveExercise = (exerciseId) => {
-        const exerciseDay = weekdays.indexOf(weekdays.filter(x => x.checked === true)[exercisesSelectedIndex]); //get number day
-        let dayElement = selectedExercises.filter(x => x.day === exerciseDay)[0]; //get current day object
-        const exercisesArray = dayElement.exercises.filter(value => value !== exerciseId);
-        const newSelectionForDay = {...dayElement, exercises: exercisesArray};
-        const newSelection = selectedExercises.map(selectionDay => { return selectionDay.day === newSelectionForDay.day ? newSelectionForDay : selectionDay});
-        setSelectedExercises([...newSelection]);
-    }
-    
-    const goToStep2 = () => {
-        setStep(2);
-        const checkedDaysForWorkout = weekdays.map((x, i) => {if(x.checked === true) return i;}).filter(x => x !== undefined);
-        
-        const daysInitialization = checkedDaysForWorkout.map(item => {
-            return {day: item, exercises: selectedExercises.filter(x => x.day === item)[0]?.exercises ?? []};
-        })
-        setSelectedExercises([...daysInitialization]);
-    }
-    
-    const goToStep1 = () => {
-        setStep(1);
-        setExercisesDay(0);
-    }
-    
-    const goToStep3 = () => {
-        setStep(3);
-        setRoutine(prevState => {
-            return {...prevState, routineWeeks: prevState.routineWeeks.map(week => {return {...week, exercises: [...selectedExercises]}})};
-        });
-    }
-    
-    const getExercisesForCurrentDay = () => {
-        const exerciseDay = weekdays.indexOf(weekdays.filter(x => x.checked === true)[exercisesSelectedIndex]);
-        return selectedExercises.filter(x => x.day === exerciseDay)[0].exercises; 
     }
     
     const getCurrentDayName = () => {
@@ -196,6 +151,35 @@ export default function YourRoutine()
         }
     }
     
+    const goToNextStep = () => {
+        if (step === 1)
+        {
+            const checkedDaysForWorkout = weekdays.map((x, i) => {if(x.checked === true) return i;}).filter(x => x !== undefined);
+
+            const daysInitialization = checkedDaysForWorkout.map(item => {
+                return {day: item, exercises: selectedExercises.filter(x => x.day === item)[0]?.exercises ?? []};
+            })
+            setSelectedExercises([...daysInitialization]);
+        }
+        
+        if (step === 2)
+        {
+            setRoutine(prevState => {
+                return {...prevState, routineWeeks: prevState.routineWeeks.map(week => {return {...week, exercises: [...selectedExercises]}})};
+            });
+        }
+        
+        setStep(prevStep => prevStep+1);
+    }
+    
+    const goToBackStep = () => {
+        if (step === 2)
+        {
+            setExercisesDay(0);
+        }
+        setStep(prevStep => prevStep-1);
+    }
+    
     return (
         <View style={darkStyles.backgroundDark}>
             <EditExerciseSerie visibilityState={serieEditionMenu} series={series} serie={currentSerie} setSeries={serieData => handleSetSerieData(serieData)}/>
@@ -241,27 +225,8 @@ export default function YourRoutine()
                     { step === 2 && <Title style={{color: '#FFF', textAlign: 'center', marginTop: 90}}>Select exercises for {getCurrentDayName()}</Title>}
                 </LinearGradient>
             </ImageBackground>
-            {/*Step 1 - Select days of the week and training period*/}
             { step === 1 && <Step1PeriodSelection weekdays={weekdays} handleDaysSelection={(days => setWeekdays(days))} handleWeeksSelection={(weeksAmount => setRoutineWeeks(weeksAmount))}/> }
-            { step === 2 &&
-                <View style={{margin: 10}}>
-                    <View style={{height: screenDimensions()[1] *0.65}}>
-                        <ExerciseSelector 
-                            selectedExercises={getExercisesForCurrentDay()}
-                            handleRemoveExercise={handleRemoveExercise}
-                            routineCreatorMode={true}
-                            handleSelectedExercise={handleSelectedExercise}/>
-                    </View>
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                        <Button title='Back' type='clear' buttonStyle={{width: 100}} onPress={() => goToStep1()}/>
-                        <View style={{alignContent: 'center'}}>
-                            <Button title='Back Day' type='clear' disabled={exercisesSelectedIndex === 0} buttonStyle={{width: 100}} onPress={() => setExercisesDay(exercisesSelectedIndex-1)}/>
-                            <Button title='Next Day' type='clear' disabled={exercisesSelectedIndex === weekdays.filter(x => x.checked === true).length-1} buttonStyle={{width: 100}} onPress={() => goNextDay()}/>
-                        </View>
-                        <Button title='Next' type='clear' buttonStyle={{width: 100}} onPress={() => goToStep3()}/>
-                    </View>
-                </View>
-            }
+            { step === 2 && <Step2ExerciseSelection weekdays={weekdays} selectedExercises={selectedExercises} setSelectedExercises={setSelectedExercises}/> }
             {
                 step === 3 &&
                 <View style={{marginTop: 20}}>
@@ -309,6 +274,19 @@ export default function YourRoutine()
                     </View>
                 </View>    
             }
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                { step === 1 && <Button title='Next' type='clear' disabled={!weekdays.some(x => x.checked === true)} buttonStyle={{marginTop: 20}} onPress={() => goToNextStep()}/> }
+                { step === 2 &&
+                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                        <Button title='Back' type='clear' buttonStyle={{width: 100}} onPress={() => goToBackStep()}/>
+                        <View style={{alignContent: 'center'}}>
+                            <Button title='Back Day' type='clear' disabled={exercisesSelectedIndex === 0} buttonStyle={{width: 100}} onPress={() => setExercisesDay(exercisesSelectedIndex-1)}/>
+                            <Button title='Next Day' type='clear' disabled={exercisesSelectedIndex === weekdays.filter(x => x.checked === true).length-1} buttonStyle={{width: 100}} onPress={() => goNextDay()}/>
+                        </View>
+                        <Button title='Next' type='clear' buttonStyle={{width: 100}} onPress={() => goToNextStep()}/>
+                    </View>
+                }
+            </View>
         </View>
         
         //Step 3 - Set the data for the exercise and add a way to go back between exercises, and a summary for the edition.

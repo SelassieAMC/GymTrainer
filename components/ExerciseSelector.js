@@ -13,7 +13,7 @@ export default function ExerciseSelector(props)
     const [filteredExercises, setFilteredExercises] = useState([]);
     
     const fetchData = () => {
-        return fetch("https://c19b-191-108-26-96.ngrok.io/api/v1/exercises/get-all",
+        return fetch("https://77ee-190-69-60-250.ngrok.io/api/v1/exercises/get-all",
             {
                 method: 'GET',
                 headers: {
