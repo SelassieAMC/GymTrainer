@@ -25,7 +25,7 @@ export default function Exercises(props)
     const [muscleFilterValueSetter, setMuscleFilterValueSetter] = useState(null);
 
     const fetchData = () => {
-        return fetch("https://77ee-190-69-60-250.ngrok.io/api/v1/exercises/get-all",
+        return fetch("https://fa67-190-69-60-250.ngrok.io/api/v1/exercises/get-all",
             {
                 method: 'GET',
                 headers: {
@@ -41,7 +41,7 @@ export default function Exercises(props)
     };
 
     const fetchCategories = () => {
-        return fetch("https://77ee-190-69-60-250.ngrok.io/api/v1/Categories/get-all",
+        return fetch("https://fa67-190-69-60-250.ngrok.io/api/v1/Categories/get-all",
             {
                 method: 'GET',
                 headers: {
@@ -59,7 +59,7 @@ export default function Exercises(props)
     };
 
     const fetchMuscles = () => {
-        return fetch("https://77ee-190-69-60-250.ngrok.io/api/v1/Muscles/get-all",
+        return fetch("https://fa67-190-69-60-250.ngrok.io/api/v1/Muscles/get-all",
             {
                 method: 'GET',
                 headers: {

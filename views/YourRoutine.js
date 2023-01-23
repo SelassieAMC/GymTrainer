@@ -1,17 +1,13 @@
-import {ImageBackground, Modal, ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
-import {List, Title} from "react-native-paper";
-import React, {useEffect, useState} from "react";
+import {ImageBackground, StyleSheet, View} from "react-native";
+import {Title} from "react-native-paper";
+import React, { useState} from "react";
 import darkStyles from "../components/common/DarkStyles";
-import CustomCheckBox from "../components/common/CustomCheckBox";
 import backgroundImage from "../images/weekPlan.jpg";
 import LinearGradient from "react-native-linear-gradient";
-import {Picker} from "@react-native-picker/picker";
 import {Button} from "react-native-elements";
-import ExerciseSelector from "../components/ExerciseSelector";
-import {screenDimensions} from "../components/common/helpers/Utils";
-import EditExerciseSerie from "../components/EditExerciseSerie";
 import Step1PeriodSelection from "../components/routine-stepper/Step1PeriodSelection";
 import Step2ExerciseSelection from "../components/routine-stepper/Step2ExercisesSelection";
+import Step3SetSeries from "../components/routine-stepper/Step3SetSeries";
 
 export default function YourRoutine()
 {
@@ -24,40 +20,13 @@ export default function YourRoutine()
         {name:'Saturday', checked:false},
         {name:'Sunday', checked:false}
     ]);
-
-    const [replyRoutineOverWeeks, setReplyRoutineOverWeeks] = useState(false);
     const [step, setStep] = useState(1);
     const [selectedExercises, setSelectedExercises] = useState([]);
     const [exercisesSelectedIndex, setExercisesDay] = useState(0);
-    const [exercisesData, setExercisesData] = useState([]);
-    const [exerciseDataModalShow, setExerciseDataModalShow] = useState(false);
-    const serieEditionMenu = useState(false);
-    
     const [weekSerieIndex, setWeekIndex] = useState(0);
     const [routine, setRoutine] = useState({ name: 'Test', routineWeeks: []});
-    const [selectedExerciseData, setSelectedExerciseData] = useState({});
     const [series, setSeries] = useState([]);
-    const [currentSerie, setCurrentSerie] = useState(0);
-    
-    const fetchData = () => {
-        return fetch("https://77ee-190-69-60-250.ngrok.io/api/v1/exercises/get-all",
-            {
-                method: 'GET',
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                setExercisesData(data);
-            })
-            .catch(error => console.log(error));
-    };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-    
     const goNextDay = () => {
         setExercisesDay(exercisesSelectedIndex+1);
         const weekDay = weekdays.indexOf(weekdays.filter(x => x.checked === true)[exercisesSelectedIndex+1]);
@@ -84,71 +53,6 @@ export default function YourRoutine()
         setRoutine(prevState => {
             return {...prevState, routineWeeks: routineWeeks}
         });
-    }
-    
-    const handleSetExerciseData = (exerciseDay, exercise) => {
-        setExerciseDataModalShow(true);
-        setSelectedExerciseData({day: exerciseDay, exerciseId: exercise});
-    }
-    
-    const initializeSeries = (value) => {
-        const seriesTemp = [];
-        
-        for(let i = 0; i < value; i++)
-        {
-            const serie = series[i] ?? {reps: '', weight: '', rest: '', fail: ''};
-            seriesTemp.push(serie);
-        }
-        
-        setSeries([...seriesTemp]);
-        setCurrentSerie(0);
-    }
-    
-    const goToStep2SerieEdition = () =>
-    {
-        if(!series.length)
-            return;
-        
-        setExerciseDataModalShow(false);
-        setCurrentSerie(0);
-        serieEditionMenu[1](true);
-    }
-    
-    const handleSetSerieData = (serieData) => {
-        setSeries(serieData);
-        setSelectedExerciseData(prevState => {
-            return {...prevState, series: serieData}
-        });
-        
-        if(currentSerie < series.length-1)
-        {
-            setCurrentSerie(prevState => prevState+1);
-            serieEditionMenu[1](true);
-        }
-        else
-        {
-            const newRoutine = routine.routineWeeks.map(x => {
-                const exerciseSerieInfo = x.exercises.map(y => {
-                    if (y.day === selectedExerciseData.day && x.week === weekSerieIndex+1) {
-                        const exercisesArray = y.exercises.map(u => 
-                        {
-                            if (u === selectedExerciseData.exerciseId)
-                            {
-                                return {id: u, series: selectedExerciseData.series};
-                            }
-                            return u;
-                        });
-                        return {...y, exercises: exercisesArray};
-                    }
-                    return y;
-                });
-                return { ...x, exercises: exerciseSerieInfo};
-            });
-            //let newRoutine = routine.routineWeeks.filter(x => x.week === weekSerieIndex+1)[0].exercises.filter(y => y.day === selectedExerciseData.day)[0].exercises.filter(u => u === selectedExerciseData.exerciseId)[0];
-            setRoutine(prevState => {
-                return {...prevState, routineWeeks: newRoutine}
-            });
-        }
     }
     
     const goToNextStep = () => {
@@ -182,41 +86,6 @@ export default function YourRoutine()
     
     return (
         <View style={darkStyles.backgroundDark}>
-            <EditExerciseSerie visibilityState={serieEditionMenu} series={series} serie={currentSerie} setSeries={serieData => handleSetSerieData(serieData)}/>
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={exerciseDataModalShow}
-                presentationStyle="overFullScreen"
-                onRequestClose={() => setExerciseDataModalShow(prev => !prev)}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <View>
-                            <Text style={{fontSize: 18}}>Set serie workout data</Text>
-                            <TextInput
-                                value={series.length?.toString()}
-                                keyboardType='numeric'
-                                maxLength={2}
-                                onChangeText={(value) => initializeSeries(value)}
-                                style={styles.text}/>
-                        </View>
-                        
-                        <View style={{flexDirection: "row", alignSelf: 'center', justifyContent: 'space-between', marginTop: 20}}>
-                            <Button
-                                title='Accept'
-                                type="clear"
-                                onPress={() => goToStep2SerieEdition()}
-                            />
-                            <Button
-                                title='Cancel'
-                                type="clear"
-                                onPress={() => setExerciseDataModalShow(false)}
-                            />
-                        </View>
-                    </View>
-                </View>
-            </Modal>
             <ImageBackground source={backgroundImage} style={styles.backgroundImage} resizeMode='cover'>
                 <LinearGradient
                     colors={['rgba(19, 20, 41, 0)', 'rgba(19, 20, 41, 0.5)', 'rgba(19, 20, 41, 1)']}
@@ -225,55 +94,28 @@ export default function YourRoutine()
                     { step === 2 && <Title style={{color: '#FFF', textAlign: 'center', marginTop: 90}}>Select exercises for {getCurrentDayName()}</Title>}
                 </LinearGradient>
             </ImageBackground>
-            { step === 1 && <Step1PeriodSelection weekdays={weekdays} handleDaysSelection={(days => setWeekdays(days))} handleWeeksSelection={(weeksAmount => setRoutineWeeks(weeksAmount))}/> }
-            { step === 2 && <Step2ExerciseSelection weekdays={weekdays} selectedExercises={selectedExercises} setSelectedExercises={setSelectedExercises}/> }
-            {
-                step === 3 &&
-                <View style={{marginTop: 20}}>
-                    <Title style={{color: '#FFF', textAlign: 'center', marginBottom: 10}}>Set exercises challenge for Week {weekSerieIndex+1}</Title>
-                    <View style={{margin: 20, height: screenDimensions()[1] *0.4}}>
-                        <ScrollView>
-                            <List.AccordionGroup>
-                                {
-                                    routine.routineWeeks[weekSerieIndex].exercises.map((exerciseDay, index) => {
-                                        return (
-                                            <List.Accordion
-                                                id={index.toString()}
-                                                style={{backgroundColor: '#242538'}}
-                                                titleStyle={{ color: '#FFF'}}
-                                                left={ props => <List.Icon {...props} icon="calendar-today" color='#FDB10E'/> }
-                                                title={weekdays[exerciseDay.day].name}
-                                                key={index}>
-                                                {exerciseDay.exercises.map(exercise => {
-                                                    return <List.Item
-                                                        onPress={() => handleSetExerciseData(exerciseDay.day, exercise)}
-                                                        left={props => <List.Icon {...props} icon="pencil" color='#FDB10E' /> }
-                                                        title={exercisesData.filter(x => x.id === exercise)[0].name} titleStyle={{color: '#FFF'}}
-                                                        style={{backgroundColor: '#131429'}}
-                                                        key={exercise}/>
-                                                })}
-                                            </List.Accordion>
-                                        )
-                                    })
-                                }
-                            </List.AccordionGroup> 
-                        </ScrollView>
-                    </View>
-                    {weekSerieIndex === 0 && <CustomCheckBox
-                        label='Reply sets over the next weeks, you will allow to change the values later.'
-                        containerStyle={{width: screenDimensions()[0]*0.9, marginTop: 20, marginBottom: 10}}
-                        labelStyle={{marginLeft:10}}
-                        status={replyRoutineOverWeeks} onPress={() => setReplyRoutineOverWeeks(prev => !prev)}/>}
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                        <Button title='Back' type='clear' buttonStyle={{width: 70}} onPress={() => setStep(2)}/>
-                        <View style={{alignContent: 'center'}}>
-                            <Button title='Back Week' type='clear' disabled={weekSerieIndex === 0 } onPress={() => setWeekIndex(prev => prev-1)}/>
-                            <Button title='Next Week' type='clear' disabled={weekSerieIndex >= routine.routineWeeks.length-1} buttonStyle={{width: 150}} onPress={() => setWeekIndex(prev => prev+1)}/>
-                        </View>
-                        <Button title='Next' type='clear' buttonStyle={{width: 70}} onPress={() => setStep(4)}/>
-                    </View>
-                </View>    
-            }
+            { step === 1 && 
+                <Step1PeriodSelection 
+                    weekdays={weekdays}
+                    handleDaysSelection={(days => setWeekdays(days))}
+                    handleWeeksSelection={(weeksAmount => setRoutineWeeks(weeksAmount))}/> }
+            { step === 2 && 
+                <Step2ExerciseSelection 
+                    weekdays={weekdays}
+                    selectedExercises={selectedExercises}
+                    setSelectedExercises={setSelectedExercises}
+                    indexDay={exercisesSelectedIndex}/> }
+            { step === 3 && 
+                <Step3SetSeries 
+                    weekdays={weekdays} 
+                    weekSerieIndex={weekSerieIndex}
+                    routineWeeks={routine.routineWeeks}
+                    setSeries={(series) => setSeries(series)}
+                    series={series} 
+                    routine={routine}
+                    setRoutine={(routine) => setRoutine(routine)} 
+                    indexDay={exercisesSelectedIndex}/> }
+            
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 { step === 1 && <Button title='Next' type='clear' disabled={!weekdays.some(x => x.checked === true)} buttonStyle={{marginTop: 20}} onPress={() => goToNextStep()}/> }
                 { step === 2 &&
@@ -284,6 +126,18 @@ export default function YourRoutine()
                             <Button title='Next Day' type='clear' disabled={exercisesSelectedIndex === weekdays.filter(x => x.checked === true).length-1} buttonStyle={{width: 100}} onPress={() => goNextDay()}/>
                         </View>
                         <Button title='Next' type='clear' buttonStyle={{width: 100}} onPress={() => goToNextStep()}/>
+                    </View>
+                }
+                { step === 3 && 
+                    <View>
+                        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                            <Button title='Back' type='clear' buttonStyle={{width: 70}} onPress={() => setStep(2)}/>
+                            <View style={{alignContent: 'center'}}>
+                                <Button title='Back Week' type='clear' disabled={weekSerieIndex === 0 } onPress={() => setWeekIndex(prev => prev-1)}/>
+                                <Button title='Next Week' type='clear' disabled={weekSerieIndex >= routine.routineWeeks.length-1} buttonStyle={{width: 150}} onPress={() => setWeekIndex(prev => prev+1)}/>
+                            </View>
+                            <Button title='Next' type='clear' buttonStyle={{width: 70}} onPress={() => setStep(4)}/>
+                        </View>
                     </View>
                 }
             </View>
@@ -298,37 +152,5 @@ export default function YourRoutine()
 const styles = StyleSheet.create({
     backgroundImage: {
         height: 120
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 20
-    },
-    modalView: {
-        margin: 10,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5
-    },
-    text: {
-        fontSize: 18,
-        alignSelf: "center",
-        borderColor: 'black',
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 5,
-        minWidth: 70,
-        textAlign: 'center',
-        marginTop: 20
-    },
+    }
 });
