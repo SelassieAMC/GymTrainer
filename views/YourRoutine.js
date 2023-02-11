@@ -24,7 +24,7 @@ export default function YourRoutine()
     const [selectedExercises, setSelectedExercises] = useState([]);
     const [exercisesSelectedIndex, setExercisesDay] = useState(0);
     const [weekSerieIndex, setWeekIndex] = useState(0);
-    const [routine, setRoutine] = useState({ name: 'Test', routineWeeks: []});
+    const [routine, setRoutine] = useState({ name: '', presentationImage: '', weeksRoutine: []});
     const [series, setSeries] = useState([]);
 
     const goNextDay = () => {
@@ -42,28 +42,49 @@ export default function YourRoutine()
     }
     
     const setRoutineWeeks = (value) => {
-        let routineWeeks = [...routine.routineWeeks];
-        for (let i = 1; i <= value; i++)
+        let weekRoutines = [...routine.weeksRoutine];
+        
+        //check if the new amount of weeks is higher than before, if lower remove the rest.
+        if (weekRoutines.length > value)
         {
-            if (!routine.routineWeeks.filter(x => x.week === i)[0])
+            weekRoutines.length = value;
+            setRoutine(prevState => { return {...prevState, weeksAmnt: value, weekRoutines: [...weekRoutines]}});
+            return;
+        }
+        
+        //only when no weekRoutines are set.
+        for (let j = 1; j <= value; j++)
+        {
+            if (!routine.weeksRoutine.filter(x => x.weekNumber === j)[0])
             {
-                routineWeeks.push({ week: i, exercises: []});
+                weekRoutines.push({ weekNumber: j, dayExercises: []});
             }
         }
-        setRoutine(prevState => {
-            return {...prevState, routineWeeks: routineWeeks}
-        });
-    }
+        setRoutine(prevState => { return {...prevState, weeksAmnt: value, weekRoutines: [...weekRoutines]}});
+    } // Adjusted model creation
     
     const goToNextStep = () => {
-        if (step === 1)
+        if (step === 1) // Adjusted model creation
         {
-            const checkedDaysForWorkout = weekdays.map((x, i) => {if(x.checked === true) return i;}).filter(x => x !== undefined);
+            const checkedDaysForWorkout = weekdays.map((x, i) => 
+                { if (x.checked === true) return i; }).filter(x => x !== undefined);
 
-            const daysInitialization = checkedDaysForWorkout.map(item => {
-                return {day: item, exercises: selectedExercises.filter(x => x.day === item)[0]?.exercises ?? []};
-            })
-            setSelectedExercises([...daysInitialization]);
+            const newWeekRoutines = routine.weeksRoutine.map(weekR => {
+                const daysRemoved = weekR.dayExercises.filter(x => checkedDaysForWorkout.some(y => y !== x.dayNumber));
+                const daysAdded = checkedDaysForWorkout.filter(x => weekR.dayExercises.some(y => y.dayNumber !== x));
+                
+                const dayExercisesData = [...weekR.dayExercises.filter(x => daysRemoved.some(y => y.dayNumber !== x.dayNumber))];
+                daysAdded.forEach(newDay => {
+                    dayExercisesData.push({ dayNumber: newDay, exerciseSeries: [] });
+                });
+                
+                return { ...weekR, dayExercises: dayExercisesData };
+            });
+            
+            setRoutine(prevState =>
+            {
+                return { ...prevState, daysToWork: checkedDaysForWorkout, weekRoutines: [...newWeekRoutines] };
+            });
         }
         
         if (step === 2)
@@ -71,6 +92,8 @@ export default function YourRoutine()
             setRoutine(prevState => {
                 return {...prevState, routineWeeks: prevState.routineWeeks.map(week => {return {...week, exercises: [...selectedExercises]}})};
             });
+            
+            //new implementation
         }
         
         setStep(prevStep => prevStep+1);
